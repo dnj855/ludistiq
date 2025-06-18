@@ -7,6 +7,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :participations, dependent: :destroy
   has_many :events, through: :participations
+  has_many :skills, dependent: :destroy
+  has_many :games, through: :skills
 
   def admin?
     participations.any?(&:admin?)

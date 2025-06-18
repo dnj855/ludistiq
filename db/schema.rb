@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_18_161012) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_18_223951) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,6 +23,22 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_18_161012) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "games", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.string "title"
+    t.integer "bgg_id"
+    t.text "description"
+    t.integer "min_players"
+    t.integer "max_players"
+    t.integer "duration"
+    t.string "image_url"
+    t.string "owner"
+    t.integer "copies_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_games_on_event_id"
+  end
+
   create_table "participations", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "event_id", null: false
@@ -31,6 +47,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_18_161012) do
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_participations_on_event_id"
     t.index ["user_id"], name: "index_participations_on_user_id"
+  end
+
+  create_table "skills", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "game_id", null: false
+    t.integer "level"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_skills_on_game_id"
+    t.index ["user_id"], name: "index_skills_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -46,6 +72,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_18_161012) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "games", "events"
   add_foreign_key "participations", "events"
   add_foreign_key "participations", "users"
+  add_foreign_key "skills", "games"
+  add_foreign_key "skills", "users"
 end
