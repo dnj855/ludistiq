@@ -1,25 +1,26 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
-  before_action :authorize_admin!
-  before_action :set_event, only: %i[show edit update destroy]
+  before_action :authorize_global_admin!, only: %i[index new create]
+  before_action :set_event, only: %i[show edit update destroy participants]
+  before_action :authorize_event_admin!, only: %i[edit update destroy participants]
 
   # GET /events or /events.json
   def index
-    @events = Event.all
+    @events = current_user.admin? ? Event.all : current_user.events
   end
 
   # GET /events/1 or /events/1.json
-  def show
-  end
+  def show; end
 
   # GET /events/new
   def new
     @event = Event.new
   end
 
+  def participants; end
+
   # GET /events/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /events or /events.json
   def create
@@ -27,6 +28,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
+        @event.participations.create!(user: current_user, role: :admin)
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
@@ -71,7 +73,16 @@ class EventsController < ApplicationController
     params.require(:event).permit(:title, :description, :start_date, :end_date)
   end
 
-  def authorize_admin!
+  def authorize_global_admin!
     redirect_to root_path, alert: 'Accès non autorisé.' unless current_user.admin?
+  end
+
+  def authorize_event_admin!
+    participation = current_user.participations.find_by(event: @event)
+
+    return if participation&.admin?
+
+    redirect_to root_path,
+                alert: 'Vous n\'avez pas les droits d\'administrateur pour cet événement.'
   end
 end

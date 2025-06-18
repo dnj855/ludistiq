@@ -1,0 +1,27 @@
+<%# app/views/events/participants.html.erb %>
+<h1>Gérer les participants pour <%= @event.title %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Participant</th>
+      <th>Rôle</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @event.participations.includes(:user).each do |participation| %>
+      <tr>
+        <td><%= participation.user.name %></td>
+        <td>
+          <%= form_with(model: participation, url: participation_path(participation), method: :patch) do |form| %>
+            <%= form.select :role, Participation.roles.keys.map { |r| [r.humanize, r] }, { selected: participation.role } %>
+            <%= form.submit "Mettre à jour" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Retour à l'événement", @event %>
