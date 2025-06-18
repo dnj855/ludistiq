@@ -1,0 +1,9 @@
+<%# app/views/games/_search_results.html.erb %>
+<ul class="border rounded-md mt-1 divide-y">
+  <% results.each do |result| %>
+    <li class="p-2 hover:bg-gray-100">
+      <%# Le lien n'a plus besoin de `data-turbo-frame` car la recherche est maintenant indépendante %>
+      <%= link_to "#{result[:name]} (#{result[:year]})", new_event_game_path(event, bgg_id: result[:id]), class: "block" %>
+    </li>
+  <% end %>
+</ul>

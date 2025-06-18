@@ -2,10 +2,14 @@
 
 Rails.application.routes.draw do
   resources :events do
+    resources :games, only: %i[new create index] do
+      post 'bgg_search', on: :collection
+    end
     member do
       get :participants
     end
   end
+
   resources :participations, only: :update
 
   devise_for :users

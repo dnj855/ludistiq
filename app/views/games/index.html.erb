@@ -1,0 +1,11 @@
+<%# frozen_string_literal: true %>
+
+<h1>Ludothèque de "<%= @event.title %>"</h1>
+
+<%= link_to "Ajouter un nouveau jeu", new_event_game_path(@event) %>
+
+<ul>
+  <% @games.each do |game| %>
+    <li><%= game.title %></li>
+  <% end %>
+</ul>

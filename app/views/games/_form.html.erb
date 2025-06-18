@@ -1,0 +1,55 @@
+<%# app/views/games/_form.html.erb %>
+
+<% if game.title.blank? %>
+  <div>
+<%= form_with(url: bgg_search_event_games_path(@event), method: :post, data: { controller: "bgg-search", action: "keyup->bgg-search#search" }) do |f| %>
+  <%= text_field_tag :query, nil, placeholder: "Rechercher sur BoardGameGeek...", class: "w-full p-2 border rounded" %>
+<% end %>
+
+    <%# C'est cette div qui sera la cible de notre Turbo Stream %>
+    <div id="bgg_search_results" class="mt-2"></div>
+  </div>
+
+  <hr class="my-4">
+  <p class="text-center text-gray-500">ou remplissez manuellement</p>
+<% end %>
+
+
+<%# FORMULAIRE DE CRÉATION FINAL %>
+<%= form_with model: [@event, game], data: { 'turbo-frame': '_top' } do |f| %>
+  <%# Affiche les erreurs de validation s'il y en a %>
+  <% if f.object.errors.any? %>
+    <div style="color: red;">
+      <h2><%= pluralize(f.object.errors.count, "error") %> prohibited this game from being saved:</h2>
+      <ul>
+        <% f.object.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div><%= f.label :title %><br><%= f.text_field :title, class: "w-full p-2 border rounded" %></div>
+    <div><%= f.label :duration, "Durée (en min)" %><br><%= f.number_field :duration, class: "w-full p-2 border rounded" %></div>
+    <div><%= f.label :min_players %><br><%= f.number_field :min_players, class: "w-full p-2 border rounded" %></div>
+    <div><%= f.label :max_players %><br><%= f.number_field :max_players, class: "w-full p-2 border rounded" %></div>
+  </div>
+
+  <div class="mt-4"><%= f.label :description %><br><%= f.text_area :description, rows: 5, class: "w-full p-2 border rounded" %></div>
+  
+  <hr class="my-4">
+  <h3 class="font-bold">Données internes</h3>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+    <div><%= f.label :owner, "Propriétaire" %><br><%= f.text_field :owner, class: "w-full p-2 border rounded" %></div>
+    <div><%= f.label :copies_count, "Nombre de copies" %><br><%= f.number_field :copies_count, class: "w-full p-2 border rounded" %></div>
+  </div>
+
+  <%= f.hidden_field :bgg_id %>
+  <%= f.hidden_field :image_url %>
+
+  <div class="mt-6 text-right">
+    <%= f.submit "Enregistrer le jeu", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+  </div>
+<% end %>

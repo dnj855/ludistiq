@@ -1,0 +1,8 @@
+<%# app/views/games/new.html.erb %>
+<h1>Ajouter un jeu à la ludothèque de "<%= @event.title %>"</h1>
+
+<%= turbo_frame_tag "bgg_search" do %>
+  <%= render 'form', game: @game, results: [] %>
+<% end %>
+
+<%= link_to "Retour à la ludothèque", event_games_path(@event) %>

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_global_admin!, only: %i[index new create]
