@@ -8,7 +8,7 @@ class BggApiService
   include HTTParty
 
   # L'URL de base de l'API BGG V2
-  base_uri 'https://www.boardgamegeek.com/xmlapi2'
+  base_uri Rails.application.credentials.dig(:bgg, :api_base_url)
 
   # Méthode pour rechercher des jeux par un nom
   def self.search(query)
