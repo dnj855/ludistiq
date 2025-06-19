@@ -1,0 +1,25 @@
+<h1>Mon Planning</h1>
+
+<% if @my_missions.any? %>
+  <div class="missions-list">
+    <% @my_missions.each do |mission| %>
+      <div class="mission-card">
+        <h3><%= mission.name %></h3>
+        <p>
+          <strong>Événement :</strong> <%= link_to mission.zone.event.title, event_path(mission.zone.event) %>
+        </p>
+        <p>
+          <strong>Zone :</strong> <%= mission.zone.name %>
+        </p>
+        <p>
+          <strong>Quand :</strong> Le <%= l mission.start_time, format: :long %> jusqu'à <%= l mission.end_time, format: "%Hh%M" %>
+        </p>
+        <% if mission.description.present? %>
+          <p><strong>Description :</strong> <%= mission.description %></p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>Vous n'êtes affecté à aucune mission pour le moment.</p>
+<% end %>

@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 
   resources :participations, only: :update
   resources :skills, only: %i[create update]
-
+  resource :planning, only: [:show], controller: :plannings
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root 'home#index'
