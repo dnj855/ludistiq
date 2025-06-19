@@ -1,0 +1,20 @@
+<%# app/views/skills/_skill_row.html.erb %>
+<div class="flex items-center justify-between p-3 border rounded-lg">
+  <span class="font-bold"><%= game.title %></span>
+  <div class="flex items-center space-x-2">
+    <%# Pour chaque niveau de compétence possible... %>
+    <% Skill.levels.keys.each do |level| %>
+      <%# On prépare un objet Skill pour le formulaire %>
+      <% skill = my_skill || current_user.skills.new(game: game) %>
+
+      <%= form_with model: skill, data: { turbo_frame: dom_id(game, "skill") } do |f| %>
+        <%= f.hidden_field :game_id, value: game.id %>
+        <%= f.hidden_field :level, value: level %>
+
+        <%# On met en évidence le niveau actuel %>
+        <% is_current_level = my_skill&.level == level %>
+        <%= f.submit level.humanize, class: "px-3 py-1 rounded-full text-sm #{is_current_level ? 'bg-blue-500 text-white' : 'bg-gray-200'}" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -3,7 +3,7 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_global_admin!, only: %i[index new create]
-  before_action :set_event, only: %i[show edit update destroy participants]
+  before_action :set_event, only: %i[show edit update destroy participants my_skills]
   before_action :authorize_event_admin!, only: %i[edit update destroy participants]
 
   # GET /events or /events.json
@@ -61,6 +61,11 @@ class EventsController < ApplicationController
       format.html { redirect_to events_path, status: :see_other, notice: 'Event was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def my_skills
+    @games = @event.games.order(:title)
+    @my_skills = current_user.skills.where(game_id: @games.pluck(:id)).index_by(&:game_id)
   end
 
   private

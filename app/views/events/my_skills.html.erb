@@ -1,0 +1,12 @@
+<%# app/views/events/my_skills.html.erb %>
+<h1>Mes Compétences pour l'événement "<%= @event.title %>"</h1>
+<p>Clique sur un niveau pour chaque jeu afin d'indiquer ta maîtrise.</p>
+
+<div class="mt-4 space-y-2">
+  <% @games.each do |game| %>
+    <%# Chaque jeu est dans son propre Turbo Frame pour des mises à jour indépendantes %>
+    <%= turbo_frame_tag dom_id(game, "skill") do %>
+      <%= render 'skills/skill_row', game: game, my_skill: @my_skills[game.id] %>
+    <% end %>
+  <% end %>
+</div>

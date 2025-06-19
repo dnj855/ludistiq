@@ -7,10 +7,12 @@ Rails.application.routes.draw do
     end
     member do
       get :participants
+      get :my_skills
     end
   end
 
   resources :participations, only: :update
+  resources :skills, only: %i[create update]
 
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
