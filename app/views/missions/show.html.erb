@@ -1,0 +1,18 @@
+<h1>Staffing pour : <%= @mission.name %></h1>
+<p>Zone : <%= @zone.name %> (<%= l @mission.start_time, format: :short %> - <%= l @mission.end_time, format: :short %>)</p>
+
+<h2>Participants</h2>
+
+<div id="participants_list">
+  <% @participants.each do |user| %>
+    <div class="participant-row" id="<%= dom_id(user, 'assignment') %>">
+      <span><%= user.name %></span>
+      <span>
+        Score compétence : <%= user.competence_score_for(@zone) %>%
+      </span>
+      <span>
+        <%= render 'assignments/assignment_button', user: user, mission: @mission %>
+      </span>
+    </div>
+  <% end %>
+</div>

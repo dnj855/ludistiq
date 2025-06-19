@@ -10,7 +10,9 @@ Rails.application.routes.draw do
       get :my_skills
     end
     resources :zones, except: [:show] do
-      resources :missions, except: [:show]
+      resources :missions do
+        resources :assignments, only: %i[create destroy]
+      end
     end
   end
 

@@ -1,0 +1,14 @@
+<%# app/views/assignments/_assignment_button.html.erb %>
+<% assignment = user.assignments.find_by(mission: mission) %>
+
+<% if assignment %>
+  <%= button_to "Désaffecter",
+                event_zone_mission_assignment_path(@event, @zone, mission, assignment),
+                method: :delete,
+                class: "btn-destructive" %>
+<% else %>
+  <%= button_to "Affecter",
+                event_zone_mission_assignments_path(@event, @zone, mission, user_id: user.id),
+                method: :post,
+                class: "btn-primary" %>
+<% end %>

@@ -2,18 +2,21 @@ class MissionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_event_and_zone
   before_action :authorize_event_admin!
-  before_action :set_mission, only: %i[edit update destroy]
+  before_action :set_mission, only: %i[show edit update destroy]
 
   def index
     @missions = @zone.missions.order(:start_time)
+  end
+
+  def show
+    @participants = @event.users.order(:name)
   end
 
   def new
     @mission = @zone.missions.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @mission = @zone.missions.new(mission_params)

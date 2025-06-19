@@ -1,0 +1,11 @@
+<%= turbo_stream.update(dom_id(@user, 'assignment')) do %>
+  <div class="participant-row" id="<%= dom_id(@user, 'assignment') %>">
+    <span><%= @user.name %></span>
+    <span>
+      Score compétence : <%= @user.competence_score_for(@zone) %>%
+    </span>
+    <span>
+      <%= render 'assignments/assignment_button', user: @user, mission: @mission %>
+    </span>
+  </div>
+<% end %>
