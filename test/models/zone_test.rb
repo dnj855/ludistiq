@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class SkillsControllerTest < ActionDispatch::IntegrationTest
+class ZoneTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

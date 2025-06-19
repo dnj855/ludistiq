@@ -1,0 +1,114 @@
+<% content_for :title, "Zones - #{@event.title}" %>
+
+<div class="w-full">
+  <!-- Header avec titre et action -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <div class="flex items-center space-x-2 text-sm text-gray-500 mb-2">
+        <%= link_to "Événements", events_path, class: "hover:text-gray-700" %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        <%= link_to @event.title, @event, class: "hover:text-gray-700" %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-gray-900">Zones</span>
+      </div>
+      <h1 class="text-3xl font-bold text-gray-900">Zones</h1>
+      <p class="mt-2 text-sm text-gray-600">Gérez les zones de votre événement</p>
+    </div>
+    <%= link_to new_event_zone_path(@event), class: "mt-4 sm:mt-0 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" do %>
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      Nouvelle zone
+    <% end %>
+  </div>
+
+  <!-- Liste des zones -->
+  <div class="mt-8">
+    <% if @zones.any? %>
+      <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+        <div class="divide-y divide-gray-200">
+          <% @zones.each do |zone| %>
+            <div class="p-6 hover:bg-gray-50 transition-colors">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                  <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                      <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h3 class="text-lg font-medium text-gray-900">
+                      <%= zone.name %>
+                    </h3>
+                    <% if zone.description.present? %>
+                      <p class="text-sm text-gray-600 mt-1">
+                        <%= truncate(zone.description, length: 100) %>
+                      </p>
+                    <% end %>
+                    <div class="flex items-center space-x-4 mt-2 text-xs text-gray-500">
+                      <span>
+                        <%= pluralize(zone.games.count, 'jeu') %>
+                      </span>
+                      <span>
+                        <%= pluralize(zone.missions.count, 'mission') %>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <%= link_to "Missions", event_zone_missions_path(@event, zone), 
+                        class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+                  <%= link_to "Modifier", edit_event_zone_path(@event, zone), 
+                        class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+                  <%= button_to "Supprimer", event_zone_path(@event, zone), 
+                        method: :delete,
+                        class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors", 
+                        data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer cette zone ?" } %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <!-- État vide -->
+      <div class="text-center py-12">
+        <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center">
+          <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </div>
+        <h3 class="mt-6 text-lg font-medium text-gray-900">Aucune zone</h3>
+        <p class="mt-2 text-sm text-gray-500">Commencez par créer votre première zone pour organiser vos jeux.</p>
+        <div class="mt-6">
+          <%= link_to new_event_zone_path(@event), class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" do %>
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Créer une zone
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Actions supplémentaires -->
+  <div class="mt-8 pt-6 border-t border-gray-200">
+    <div class="flex space-x-3">
+      <%= link_to @event, class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Retour à l'événement
+      <% end %>
+    </div>
+  </div>
+</div> 

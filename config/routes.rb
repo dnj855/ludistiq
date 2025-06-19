@@ -9,6 +9,9 @@ Rails.application.routes.draw do
       get :participants
       get :my_skills
     end
+    resources :zones, except: [:show] do
+      resources :missions, except: [:show]
+    end
   end
 
   resources :participations, only: :update

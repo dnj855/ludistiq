@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_18_223951) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_19_134138) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assignments", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "mission_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mission_id"], name: "index_assignments_on_mission_id"
+    t.index ["user_id"], name: "index_assignments_on_user_id"
+  end
 
   create_table "events", force: :cascade do |t|
     t.string "title"
@@ -36,7 +45,20 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_18_223951) do
     t.integer "copies_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "zone_id", null: false
     t.index ["event_id"], name: "index_games_on_event_id"
+    t.index ["zone_id"], name: "index_games_on_zone_id"
+  end
+
+  create_table "missions", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.bigint "zone_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["zone_id"], name: "index_missions_on_zone_id"
   end
 
   create_table "participations", force: :cascade do |t|
@@ -72,9 +94,23 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_18_223951) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "zones", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.bigint "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_zones_on_event_id"
+  end
+
+  add_foreign_key "assignments", "missions"
+  add_foreign_key "assignments", "users"
   add_foreign_key "games", "events"
+  add_foreign_key "games", "zones"
+  add_foreign_key "missions", "zones"
   add_foreign_key "participations", "events"
   add_foreign_key "participations", "users"
   add_foreign_key "skills", "games"
   add_foreign_key "skills", "users"
+  add_foreign_key "zones", "events"
 end

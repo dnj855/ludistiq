@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :events, through: :participations
   has_many :skills, dependent: :destroy
   has_many :games, through: :skills
+  has_many :assignments, dependent: :destroy
+  has_many :missions, through: :assignments
 
   def admin?
     participations.any?(&:admin?)

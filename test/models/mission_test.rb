@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class SkillsControllerTest < ActionDispatch::IntegrationTest
+class MissionTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

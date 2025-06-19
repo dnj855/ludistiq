@@ -1,0 +1,47 @@
+<% content_for :title, "Nouvelle mission - #{@zone.name}" %>
+
+<div class="w-full max-w-4xl mx-auto">
+  <!-- Header avec breadcrumb -->
+  <div class="mb-8">
+    <div class="flex items-center space-x-2 text-sm text-gray-500 mb-4">
+      <%= link_to "Événements", events_path, class: "hover:text-gray-700" %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+      <%= link_to @event.title, @event, class: "hover:text-gray-700" %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+      <%= link_to "Zones", event_zones_path(@event), class: "hover:text-gray-700" %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+      <%= link_to "Missions - #{@zone.name}", event_zone_missions_path(@event, @zone), class: "hover:text-gray-700" %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+      <span class="text-gray-900">Nouvelle mission</span>
+    </div>
+    
+    <div class="flex items-center space-x-4">
+      <div class="flex-shrink-0">
+        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Nouvelle mission</h1>
+        <p class="mt-2 text-sm text-gray-600">Créez une nouvelle mission pour la zone <%= @zone.name %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulaire -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200">
+    <div class="p-6">
+      <%= render 'form', mission: @mission %>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,112 @@
+<%= form_with(model: [@event, @zone, mission], class: "space-y-6") do |form| %>
+  <% if mission.errors.any? %>
+    <div class="rounded-md bg-red-50 p-4 border border-red-200">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">
+            <%= pluralize(mission.errors.count, "erreur") %> <%= mission.errors.count > 1 ? "empêchent" : "empêche" %> l'enregistrement :
+          </h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul class="list-disc space-y-1 pl-5">
+              <% mission.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Nom de la mission -->
+  <div>
+    <%= form.label :name, class: "block text-sm font-medium text-gray-700 mb-2" do %>
+      Nom de la mission
+      <span class="text-red-500">*</span>
+    <% end %>
+    <%= form.text_field :name, 
+          class: [
+            "appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 sm:text-sm transition-colors",
+            mission.errors[:name].any? ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+          ],
+          placeholder: "Ex: Accueil des participants, Démonstration de jeu, Animation...",
+          required: true %>
+    <% if mission.errors[:name].any? %>
+      <p class="mt-2 text-sm text-red-600">
+        <%= mission.errors[:name].first %>
+      </p>
+    <% end %>
+  </div>
+
+  <!-- Description -->
+  <div>
+    <%= form.label :description, class: "block text-sm font-medium text-gray-700 mb-2" do %>
+      Description
+    <% end %>
+    <%= form.text_area :description, 
+          rows: 4,
+          class: [
+            "appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 sm:text-sm transition-colors resize-y",
+            mission.errors[:description].any? ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+          ],
+          placeholder: "Décrivez cette mission, les tâches à accomplir, les responsabilités..." %>
+    <p class="mt-2 text-sm text-gray-500">
+      Ajoutez des détails sur cette mission pour aider les participants à comprendre leur rôle.
+    </p>
+    <% if mission.errors[:description].any? %>
+      <p class="mt-2 text-sm text-red-600">
+        <%= mission.errors[:description].first %>
+      </p>
+    <% end %>
+  </div>
+
+  <!-- Horaires -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Heure de début -->
+    <div>
+      <%= form.label :start_time, class: "block text-sm font-medium text-gray-700 mb-2" do %>
+        Heure de début
+      <% end %>
+      <%= form.datetime_local_field :start_time, 
+            class: [
+              "appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 sm:text-sm transition-colors",
+              mission.errors[:start_time].any? ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            ] %>
+      <% if mission.errors[:start_time].any? %>
+        <p class="mt-2 text-sm text-red-600">
+          <%= mission.errors[:start_time].first %>
+        </p>
+      <% end %>
+    </div>
+
+    <!-- Heure de fin -->
+    <div>
+      <%= form.label :end_time, class: "block text-sm font-medium text-gray-700 mb-2" do %>
+        Heure de fin
+      <% end %>
+      <%= form.datetime_local_field :end_time, 
+            class: [
+              "appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 sm:text-sm transition-colors",
+              mission.errors[:end_time].any? ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            ] %>
+      <% if mission.errors[:end_time].any? %>
+        <p class="mt-2 text-sm text-red-600">
+          <%= mission.errors[:end_time].first %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-6">
+    <%= form.submit mission.persisted? ? "Mettre à jour la mission" : "Créer la mission",
+          class: "w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" %>
+    <%= link_to "Annuler", event_zone_missions_path(@event, @zone),
+          class: "w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+  </div>
+<% end %> 
