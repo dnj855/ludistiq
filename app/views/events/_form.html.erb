@@ -1,17 +1,17 @@
 <%= form_with(model: event, class: "space-y-6") do |form| %>
   <% if event.errors.any? %>
-    <div class="rounded-md bg-red-50 p-4 border border-red-200">
+    <div class="rounded-md bg-rose-50 p-4 ring-1 ring-inset ring-rose-200">
       <div class="flex">
         <div class="flex-shrink-0">
-          <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+          <svg class="h-5 w-5 text-rose-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
           </svg>
         </div>
         <div class="ml-3">
-          <h3 class="text-sm font-medium text-red-800">
+          <h3 class="text-sm font-semibold text-rose-800">
             <%= pluralize(event.errors.count, "erreur") %> <%= event.errors.count > 1 ? "empêchent" : "empêche" %> l'enregistrement :
           </h3>
-          <div class="mt-2 text-sm text-red-700">
+          <div class="mt-2 text-sm text-rose-700">
             <ul class="list-disc space-y-1 pl-5">
               <% event.errors.each do |error| %>
                 <li><%= error.full_message %></li>
@@ -25,19 +25,19 @@
 
   <!-- Titre -->
   <div>
-    <%= form.label :title, class: "block text-sm font-medium text-gray-700 mb-2" do %>
+    <%= form.label :title, class: "block text-sm font-semibold text-slate-700 mb-2" do %>
       Titre de l'événement
-      <span class="text-red-500">*</span>
+      <span class="text-rose-500">*</span>
     <% end %>
     <%= form.text_field :title, 
           class: [
-            "appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 sm:text-sm transition-colors",
-            event.errors[:title].any? ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            "appearance-none block w-full px-3 py-2 rounded-md shadow-sm placeholder-slate-400 sm:text-sm transition-colors ring-1 ring-inset focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+            event.errors[:title].any? ? "ring-rose-300 text-rose-900 placeholder-rose-300 focus-visible:outline-rose-600" : "ring-slate-300 focus-visible:outline-indigo-600"
           ],
           placeholder: "Ex: Soirée jeux de société mensuelle",
           required: true %>
     <% if event.errors[:title].any? %>
-      <p class="mt-2 text-sm text-red-600">
+      <p class="mt-2 text-sm text-rose-600">
         <%= event.errors[:title].first %>
       </p>
     <% end %>
@@ -45,21 +45,21 @@
 
   <!-- Description -->
   <div>
-    <%= form.label :description, class: "block text-sm font-medium text-gray-700 mb-2" do %>
+    <%= form.label :description, class: "block text-sm font-semibold text-slate-700 mb-2" do %>
       Description
     <% end %>
     <%= form.text_area :description, 
           rows: 4,
           class: [
-            "appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 sm:text-sm transition-colors resize-y",
-            event.errors[:description].any? ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            "appearance-none block w-full px-3 py-2 rounded-md shadow-sm placeholder-slate-400 sm:text-sm transition-colors resize-y ring-1 ring-inset focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+            event.errors[:description].any? ? "ring-rose-300 text-rose-900 placeholder-rose-300 focus-visible:outline-rose-600" : "ring-slate-300 focus-visible:outline-indigo-600"
           ],
           placeholder: "Décrivez votre événement, les activités prévues, les informations pratiques..." %>
-    <p class="mt-2 text-sm text-gray-500">
+    <p class="mt-2 text-sm text-slate-600">
       Ajoutez toutes les informations utiles pour les participants (lieu, matériel à apporter, niveau requis, etc.)
     </p>
     <% if event.errors[:description].any? %>
-      <p class="mt-2 text-sm text-red-600">
+      <p class="mt-2 text-sm text-rose-600">
         <%= event.errors[:description].first %>
       </p>
     <% end %>
@@ -69,18 +69,18 @@
   <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
     <!-- Date de début -->
     <div>
-      <%= form.label :start_date, class: "block text-sm font-medium text-gray-700 mb-2" do %>
+      <%= form.label :start_date, class: "block text-sm font-semibold text-slate-700 mb-2" do %>
         Date et heure de début
-        <span class="text-red-500">*</span>
+        <span class="text-rose-500">*</span>
       <% end %>
       <%= form.datetime_local_field :start_date,
             class: [
-              "appearance-none block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 sm:text-sm transition-colors",
-              event.errors[:start_date].any? ? "border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+              "appearance-none block w-full px-3 py-2 rounded-md shadow-sm sm:text-sm transition-colors ring-1 ring-inset focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+              event.errors[:start_date].any? ? "ring-rose-300 text-rose-900 focus-visible:outline-rose-600" : "ring-slate-300 focus-visible:outline-indigo-600"
             ],
             required: true %>
       <% if event.errors[:start_date].any? %>
-        <p class="mt-2 text-sm text-red-600">
+        <p class="mt-2 text-sm text-rose-600">
           <%= event.errors[:start_date].first %>
         </p>
       <% end %>
@@ -88,18 +88,18 @@
 
     <!-- Date de fin -->
     <div>
-      <%= form.label :end_date, class: "block text-sm font-medium text-gray-700 mb-2" do %>
+      <%= form.label :end_date, class: "block text-sm font-semibold text-slate-700 mb-2" do %>
         Date et heure de fin
-        <span class="text-red-500">*</span>
+        <span class="text-rose-500">*</span>
       <% end %>
       <%= form.datetime_local_field :end_date,
             class: [
-              "appearance-none block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-0 sm:text-sm transition-colors",
-              event.errors[:end_date].any? ? "border-red-300 text-red-900 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+              "appearance-none block w-full px-3 py-2 rounded-md shadow-sm sm:text-sm transition-colors ring-1 ring-inset focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
+              event.errors[:end_date].any? ? "ring-rose-300 text-rose-900 focus-visible:outline-rose-600" : "ring-slate-300 focus-visible:outline-indigo-600"
             ],
             required: true %>
       <% if event.errors[:end_date].any? %>
-        <p class="mt-2 text-sm text-red-600">
+        <p class="mt-2 text-sm text-rose-600">
           <%= event.errors[:end_date].first %>
         </p>
       <% end %>
@@ -109,6 +109,6 @@
   <!-- Actions -->
   <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-6">
     <%= form.submit "Enregistrer l'événement",
-          class: "w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" %>
+          class: "w-full sm:w-auto inline-flex justify-center items-center rounded-md px-4 py-2 text-sm font-semibold text-white bg-indigo-600 shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed" %>
   </div>
 <% end %>

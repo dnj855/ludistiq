@@ -1,15 +1,65 @@
 <%# app/views/events/my_skills.html.erb %>
-<h1>Mes Compétences pour l'événement "<%= @event.title %>"</h1>
-<div class="mb-4">
-  <%= link_to "← Retour à l'événement", event_path(@event), class: "text-blue-500 hover:underline" %>
-</div>
-<p>Clique sur un niveau pour chaque jeu afin d'indiquer ta maîtrise.</p>
+<div class="max-w-5xl mx-auto">
+  <!-- En-tête avec navigation -->
+  <div class="mb-8">
+    <div class="flex items-center space-x-3 mb-4">
+      <%= link_to event_path(@event), class: "inline-flex items-center text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors" do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Retour à l'événement
+      <% end %>
+    </div>
+    <h1 class="text-3xl font-bold text-slate-900">Mes Compétences</h1>
+    <p class="mt-2 text-sm text-slate-600">
+      Évaluez votre niveau pour chaque jeu de l'événement "<span class="font-semibold"><%= @event.title %></span>".
+    </p>
+  </div>
 
-<div class="mt-4 space-y-2">
-  <% @games.each do |game| %>
-    <%# Chaque jeu est dans son propre Turbo Frame pour des mises à jour indépendantes %>
-    <%= turbo_frame_tag dom_id(game, "skill") do %>
-      <%= render 'skills/skill_row', game: game, my_skill: @my_skills[game.id] %>
+  <!-- Instructions -->
+  <div class="bg-indigo-50 rounded-xl p-6 mb-8 ring-1 ring-inset ring-indigo-200">
+    <div class="flex items-start">
+      <div class="flex-shrink-0">
+        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <h3 class="text-sm font-semibold text-indigo-800">Comment évaluer vos compétences</h3>
+        <p class="mt-2 text-sm text-indigo-700">
+          Cliquez sur le niveau correspondant à votre maîtrise pour chaque jeu. Cette information nous aide à optimiser l'organisation et la répartition des équipes.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Liste des jeux avec compétences -->
+  <div class="space-y-4">
+    <% @games.each do |game| %>
+      <%# Chaque jeu est dans son propre Turbo Frame pour des mises à jour indépendantes %>
+      <%= turbo_frame_tag dom_id(game, "skill") do %>
+        <%= render 'skills/skill_row', game: game, my_skill: @my_skills[game.id] %>
+      <% end %>
     <% end %>
+  </div>
+
+  <% if @games.empty? %>
+    <!-- État vide -->
+    <div class="text-center py-12">
+      <div class="mx-auto w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center">
+        <svg class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+      </div>
+      <h3 class="mt-6 text-lg font-semibold text-slate-900">Aucun jeu disponible</h3>
+      <p class="mt-2 text-sm text-slate-600">
+        Il n'y a pas encore de jeux configurés pour cet événement.
+      </p>
+      <div class="mt-6">
+        <%= link_to event_games_path(@event), class: "inline-flex items-center rounded-md px-4 py-2 text-sm font-semibold text-white bg-indigo-600 shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+          Gérer la ludothèque
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>

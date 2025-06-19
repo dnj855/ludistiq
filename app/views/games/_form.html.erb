@@ -151,6 +151,18 @@
           <p class="mt-1 text-sm text-gray-500">Combien d'exemplaires disponibles ?</p>
         </div>
       </div>
+
+      <!-- Zone d'installation -->
+      <div class="sm:col-span-2">
+        <%= f.label :zone_id, "Zone d'installation", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= f.collection_select :zone_id, 
+              @event.zones.order(:name), 
+              :id, 
+              :name,
+              { prompt: "Sélectionnez une zone (optionnel)" },
+              { class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors" } %>
+        <p class="mt-1 text-sm text-gray-500">Dans quelle zone ce jeu sera-t-il installé ?</p>
+      </div>
     </div>
 
     <!-- Champs cachés -->

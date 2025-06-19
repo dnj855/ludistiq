@@ -3,14 +3,14 @@
 <div class="max-w-3xl mx-auto">
   <!-- En-tête -->
   <div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-900">Créer un nouvel événement</h1>
-    <p class="mt-2 text-sm text-gray-600">
+    <h1 class="text-3xl font-bold text-slate-900">Créer un nouvel événement</h1>
+    <p class="mt-2 text-sm text-slate-600">
       Organisez votre prochain événement ludique en quelques étapes simples.
     </p>
   </div>
 
   <!-- Formulaire dans une carte -->
-  <div class="bg-white shadow-sm rounded-lg border border-gray-200">
+  <div class="bg-white shadow-sm rounded-xl ring-1 ring-inset ring-slate-200">
     <div class="px-6 py-8">
       <%= render "form", event: @event %>
     </div>
@@ -18,8 +18,8 @@
 
   <!-- Actions secondaires -->
   <div class="mt-6 flex justify-start">
-    <%= link_to events_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" do %>
-      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <%= link_to events_path, class: "inline-flex items-center rounded-md bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>
       Retour aux événements

@@ -1,10 +1,29 @@
-<% content_for :title, "Editing event" %>
+<% content_for :title, "Modifier l'événement" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">Editing event</h1>
+<div class="max-w-3xl mx-auto">
+  <!-- En-tête -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-slate-900">Modifier l'événement</h1>
+    <p class="mt-2 text-sm text-slate-600">
+      Mettez à jour les informations de votre événement ludique.
+    </p>
+  </div>
 
-  <%= render "form", event: @event %>
+  <!-- Formulaire dans une carte -->
+  <div class="bg-white shadow-sm rounded-xl ring-1 ring-inset ring-slate-200">
+    <div class="px-6 py-8">
+      <%= render "form", event: @event %>
+    </div>
+  </div>
 
-  <%= link_to "Show this event", @event, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to events", events_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <!-- Actions secondaires -->
+  <div class="mt-6 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+    <%= link_to "Voir l'événement", @event, class: "inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+    <%= link_to events_path, class: "inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      Retour aux événements
+    <% end %>
+  </div>
 </div>
