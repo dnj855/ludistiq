@@ -1,5 +1,8 @@
 <%# app/views/events/my_skills.html.erb %>
 <h1>Mes Compétences pour l'événement "<%= @event.title %>"</h1>
+<div class="mb-4">
+  <%= link_to "← Retour à l'événement", event_path(@event), class: "text-blue-500 hover:underline" %>
+</div>
 <p>Clique sur un niveau pour chaque jeu afin d'indiquer ta maîtrise.</p>
 
 <div class="mt-4 space-y-2">

@@ -1,55 +1,166 @@
 <%# app/views/games/_form.html.erb %>
 
+<!-- Recherche BoardGameGeek (seulement pour les nouveaux jeux) -->
 <% if game.title.blank? %>
-  <div>
-<%= form_with(url: bgg_search_event_games_path(@event), method: :post, data: { controller: "bgg-search", action: "keyup->bgg-search#search" }) do |f| %>
-  <%= text_field_tag :query, nil, placeholder: "Rechercher sur BoardGameGeek...", class: "w-full p-2 border rounded" %>
-<% end %>
+  <div class="mb-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+    <div class="flex items-center mb-4">
+      <svg class="w-6 h-6 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <h3 class="text-lg font-medium text-blue-900">Recherche BoardGameGeek</h3>
+    </div>
+    <p class="text-sm text-blue-700 mb-4">
+      Recherchez votre jeu dans la base de données BoardGameGeek pour importer automatiquement ses informations.
+    </p>
+    
+    <%= form_with(url: bgg_search_event_games_path(@event), method: :post, data: { controller: "bgg-search", action: "keyup->bgg-search#search" }, class: "space-y-4") do |f| %>
+      <%= text_field_tag :query, nil, 
+            placeholder: "Tapez le nom du jeu à rechercher...", 
+            class: "block w-full px-4 py-3 border border-blue-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm placeholder-blue-400" %>
+    <% end %>
 
-    <%# C'est cette div qui sera la cible de notre Turbo Stream %>
-    <div id="bgg_search_results" class="mt-2"></div>
+    <div id="bgg_search_results" class="mt-4"></div>
   </div>
 
-  <hr class="my-4">
-  <p class="text-center text-gray-500">ou remplissez manuellement</p>
+  <div class="relative">
+    <div class="absolute inset-0 flex items-center">
+      <div class="w-full border-t border-gray-300" />
+    </div>
+    <div class="relative flex justify-center text-sm">
+      <span class="px-4 bg-gray-50 text-gray-500 font-medium">ou remplissez manuellement</span>
+    </div>
+  </div>
 <% end %>
 
+<!-- Formulaire principal -->
+<div class="mt-8">
+  <%= form_with model: [@event, game], data: { 'turbo-frame': '_top' }, class: "space-y-6" do |f| %>
+    <!-- Messages d'erreur -->
+    <% if f.object.errors.any? %>
+      <div class="rounded-md bg-red-50 p-4 border border-red-200">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-red-800">
+              <%= pluralize(f.object.errors.count, "erreur") %> <%= f.object.errors.count > 1 ? "empêchent" : "empêche" %> l'enregistrement :
+            </h3>
+            <div class="mt-2 text-sm text-red-700">
+              <ul class="list-disc space-y-1 pl-5">
+                <% f.object.errors.each do |error| %>
+                  <li><%= error.full_message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
 
-<%# FORMULAIRE DE CRÉATION FINAL %>
-<%= form_with model: [@event, game], data: { 'turbo-frame': '_top' } do |f| %>
-  <%# Affiche les erreurs de validation s'il y en a %>
-  <% if f.object.errors.any? %>
-    <div style="color: red;">
-      <h2><%= pluralize(f.object.errors.count, "error") %> prohibited this game from being saved:</h2>
-      <ul>
-        <% f.object.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+    <!-- Informations de base -->
+    <div class="bg-white border border-gray-200 rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+        <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Informations générales
+      </h3>
+      
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <!-- Titre -->
+        <div class="sm:col-span-2">
+          <%= f.label :title, "Titre du jeu", class: "block text-sm font-medium text-gray-700 mb-2" do %>
+            Titre du jeu <span class="text-red-500">*</span>
+          <% end %>
+          <%= f.text_field :title, 
+                class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
+                placeholder: "Ex: Catan, Azul, Wingspan...",
+                required: true %>
+        </div>
+
+        <!-- Durée -->
+        <div>
+          <%= f.label :duration, "Durée (en minutes)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.number_field :duration, 
+                class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
+                placeholder: "Ex: 60",
+                min: 1 %>
+          <p class="mt-1 text-sm text-gray-500">Durée approximative d'une partie</p>
+        </div>
+
+        <!-- Nombre de joueurs -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <%= f.label :min_players, "Min joueurs", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= f.number_field :min_players, 
+                  class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
+                  placeholder: "2",
+                  min: 1 %>
+          </div>
+          <div>
+            <%= f.label :max_players, "Max joueurs", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= f.number_field :max_players, 
+                  class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
+                  placeholder: "4",
+                  min: 1 %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="mt-6">
+        <%= f.label :description, class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= f.text_area :description, 
+              rows: 4,
+              class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors resize-y",
+              placeholder: "Décrivez brièvement le jeu, ses mécaniques, son thème..." %>
+        <p class="mt-1 text-sm text-gray-500">Description optionnelle du jeu</p>
+      </div>
+    </div>
+
+    <!-- Informations de gestion -->
+    <div class="bg-white border border-gray-200 rounded-lg p-6">
+      <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+        <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+        Gestion interne
+      </h3>
+      
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <!-- Propriétaire -->
+        <div>
+          <%= f.label :owner, "Propriétaire", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.text_field :owner, 
+                class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
+                placeholder: "Nom du propriétaire" %>
+          <p class="mt-1 text-sm text-gray-500">Qui possède ce jeu ?</p>
+        </div>
+
+        <!-- Nombre d'exemplaires -->
+        <div>
+          <%= f.label :copies_count, "Nombre d'exemplaires", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.number_field :copies_count, 
+                class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
+                placeholder: "1",
+                min: 1,
+                value: f.object.copies_count || 1 %>
+          <p class="mt-1 text-sm text-gray-500">Combien d'exemplaires disponibles ?</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Champs cachés -->
+    <%= f.hidden_field :bgg_id %>
+    <%= f.hidden_field :image_url %>
+
+    <!-- Actions -->
+    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-6">
+      <%= f.submit "Enregistrer le jeu", 
+            class: "w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" %>
     </div>
   <% end %>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div><%= f.label :title %><br><%= f.text_field :title, class: "w-full p-2 border rounded" %></div>
-    <div><%= f.label :duration, "Durée (en min)" %><br><%= f.number_field :duration, class: "w-full p-2 border rounded" %></div>
-    <div><%= f.label :min_players %><br><%= f.number_field :min_players, class: "w-full p-2 border rounded" %></div>
-    <div><%= f.label :max_players %><br><%= f.number_field :max_players, class: "w-full p-2 border rounded" %></div>
-  </div>
-
-  <div class="mt-4"><%= f.label :description %><br><%= f.text_area :description, rows: 5, class: "w-full p-2 border rounded" %></div>
-  
-  <hr class="my-4">
-  <h3 class="font-bold">Données internes</h3>
-  
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-    <div><%= f.label :owner, "Propriétaire" %><br><%= f.text_field :owner, class: "w-full p-2 border rounded" %></div>
-    <div><%= f.label :copies_count, "Nombre de copies" %><br><%= f.number_field :copies_count, class: "w-full p-2 border rounded" %></div>
-  </div>
-
-  <%= f.hidden_field :bgg_id %>
-  <%= f.hidden_field :image_url %>
-
-  <div class="mt-6 text-right">
-    <%= f.submit "Enregistrer le jeu", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
-  </div>
-<% end %>
+</div>

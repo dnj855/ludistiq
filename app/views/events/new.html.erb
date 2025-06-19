@@ -1,9 +1,28 @@
-<% content_for :title, "New event" %>
+<% content_for :title, "Nouvel événement" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New event</h1>
+<div class="max-w-3xl mx-auto">
+  <!-- En-tête -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">Créer un nouvel événement</h1>
+    <p class="mt-2 text-sm text-gray-600">
+      Organisez votre prochain événement ludique en quelques étapes simples.
+    </p>
+  </div>
 
-  <%= render "form", event: @event %>
+  <!-- Formulaire dans une carte -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200">
+    <div class="px-6 py-8">
+      <%= render "form", event: @event %>
+    </div>
+  </div>
 
-  <%= link_to "Back to events", events_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <!-- Actions secondaires -->
+  <div class="mt-6 flex justify-start">
+    <%= link_to events_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      Retour aux événements
+    <% end %>
+  </div>
 </div>
