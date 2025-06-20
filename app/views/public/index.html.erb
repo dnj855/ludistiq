@@ -1,0 +1,25 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="text-center mb-10">
+    <h1 class="text-4xl md:text-5xl font-bold text-slate-900">Bienvenue sur Ludistiq</h1>
+    <p class="mt-4 text-lg text-slate-600">Le système d'exploitation pour les festivals de jeux de société.</p>
+  </div>
+
+  <h2 class="text-3xl font-bold text-slate-900 mb-6">Nos Événements</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% if @events.any? %>
+      <% @events.each do |event| %>
+        <%= link_to public_event_path(event), class: "block p-6 bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-slate-200" do %>
+          <h3 class="text-xl md:text-2xl font-semibold text-slate-900"><%= event.title %></h3>
+          <p class="text-slate-600 mt-2 line-clamp-3"><%= event.description %></p>
+          <div class="border-t border-slate-200 mt-4 pt-4">
+            <p class="text-sm font-medium text-indigo-600">
+              Du <%= l(event.start_date, format: :long) %> au <%= l(event.end_date, format: :long) %>
+            </p>
+          </div>
+        <% end %>
+      <% end %>
+    <% else %>
+      <p class="text-slate-500">Aucun événement à afficher pour le moment.</p>
+    <% end %>
+  </div>
+</div>

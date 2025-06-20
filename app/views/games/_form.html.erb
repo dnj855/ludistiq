@@ -37,26 +37,13 @@
   <%= form_with model: [@event, game], data: { 'turbo-frame': '_top' }, class: "space-y-6" do |f| %>
     <!-- Messages d'erreur -->
     <% if f.object.errors.any? %>
-      <div class="rounded-md bg-red-50 p-4 border border-red-200">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-            </svg>
-          </div>
-          <div class="ml-3">
-            <h3 class="text-sm font-medium text-red-800">
-              <%= pluralize(f.object.errors.count, "erreur") %> <%= f.object.errors.count > 1 ? "empêchent" : "empêche" %> l'enregistrement :
-            </h3>
-            <div class="mt-2 text-sm text-red-700">
-              <ul class="list-disc space-y-1 pl-5">
-                <% f.object.errors.each do |error| %>
-                  <li><%= error.full_message %></li>
-                <% end %>
-              </ul>
-            </div>
-          </div>
-        </div>
+      <div class="mb-4 p-3 bg-rose-100 text-rose-800 rounded-lg">
+        <h2 class="font-bold"><%= pluralize(f.object.errors.count, "erreur") %> :</h2>
+        <ul>
+          <% f.object.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
       </div>
     <% end %>
 
@@ -79,6 +66,11 @@
                 class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
                 placeholder: "Ex: Catan, Azul, Wingspan...",
                 required: true %>
+          <% if f.object.errors.has_key?(:title) %>
+            <p class="mt-2 text-sm text-red-600">
+              <%= f.object.errors.full_messages_for(:title).to_sentence %>
+            </p>
+          <% end %>
         </div>
 
         <!-- Durée -->
@@ -89,6 +81,11 @@
                 placeholder: "Ex: 60",
                 min: 1 %>
           <p class="mt-1 text-sm text-gray-500">Durée approximative d'une partie</p>
+          <% if f.object.errors.has_key?(:duration) %>
+            <p class="mt-2 text-sm text-red-600">
+              <%= f.object.errors.full_messages_for(:duration).to_sentence %>
+            </p>
+          <% end %>
         </div>
 
         <!-- Nombre de joueurs -->
@@ -99,6 +96,11 @@
                   class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
                   placeholder: "2",
                   min: 1 %>
+            <% if f.object.errors.has_key?(:min_players) %>
+              <p class="mt-2 text-sm text-red-600">
+                <%= f.object.errors.full_messages_for(:min_players).to_sentence %>
+              </p>
+            <% end %>
           </div>
           <div>
             <%= f.label :max_players, "Max joueurs", class: "block text-sm font-medium text-gray-700 mb-2" %>
@@ -106,6 +108,11 @@
                   class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
                   placeholder: "4",
                   min: 1 %>
+            <% if f.object.errors.has_key?(:max_players) %>
+              <p class="mt-2 text-sm text-red-600">
+                <%= f.object.errors.full_messages_for(:max_players).to_sentence %>
+              </p>
+            <% end %>
           </div>
         </div>
       </div>
@@ -118,6 +125,11 @@
               class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors resize-y",
               placeholder: "Décrivez brièvement le jeu, ses mécaniques, son thème..." %>
         <p class="mt-1 text-sm text-gray-500">Description optionnelle du jeu</p>
+        <% if f.object.errors.has_key?(:description) %>
+          <p class="mt-2 text-sm text-red-600">
+            <%= f.object.errors.full_messages_for(:description).to_sentence %>
+          </p>
+        <% end %>
       </div>
     </div>
 
@@ -138,6 +150,11 @@
                 class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
                 placeholder: "Nom du propriétaire" %>
           <p class="mt-1 text-sm text-gray-500">Qui possède ce jeu ?</p>
+          <% if f.object.errors.has_key?(:owner) %>
+            <p class="mt-2 text-sm text-red-600">
+              <%= f.object.errors.full_messages_for(:owner).to_sentence %>
+            </p>
+          <% end %>
         </div>
 
         <!-- Nombre d'exemplaires -->
@@ -149,6 +166,11 @@
                 min: 1,
                 value: f.object.copies_count || 1 %>
           <p class="mt-1 text-sm text-gray-500">Combien d'exemplaires disponibles ?</p>
+          <% if f.object.errors.has_key?(:copies_count) %>
+            <p class="mt-2 text-sm text-red-600">
+              <%= f.object.errors.full_messages_for(:copies_count).to_sentence %>
+            </p>
+          <% end %>
         </div>
       </div>
 
@@ -162,6 +184,11 @@
               { prompt: "Sélectionnez une zone (optionnel)" },
               { class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors" } %>
         <p class="mt-1 text-sm text-gray-500">Dans quelle zone ce jeu sera-t-il installé ?</p>
+        <% if f.object.errors.has_key?(:zone_id) %>
+          <p class="mt-2 text-sm text-red-600">
+            <%= f.object.errors.full_messages_for(:zone_id).to_sentence %>
+          </p>
+        <% end %>
       </div>
     </div>
 
