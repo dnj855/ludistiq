@@ -5,4 +5,5 @@ class Event < ApplicationRecord
   has_many :users, through: :participations
   has_many :games, dependent: :destroy
   has_many :zones, dependent: :destroy
+  has_many :messages, dependent: :destroy
 end

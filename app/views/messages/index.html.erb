@@ -1,0 +1,22 @@
+<%# app/views/messages/index.html.erb %>
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-slate-900">Mur de communication</h1>
+    <%# Ce bouton n'apparaît que pour les admins de l'événement %>
+    <% if current_user_is_event_admin? %>
+      <%= link_to 'Nouveau Message', new_event_message_path(@event), class: "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold text-white bg-indigo-600 shadow-sm transition-colors hover:bg-indigo-700" %>
+    <% end %>
+  </div>
+
+  <%# Le conteneur pour notre liste de messages %>
+  <div id="messages" class="space-y-6">
+    <% if @messages.any? %>
+      <%# 'render @messages' va automatiquement utiliser le partial '_message.html.erb' pour chaque message %>
+      <%= render @messages %>
+    <% else %>
+      <div class="text-center text-slate-500 py-10">
+        <p>Aucun message pour le moment.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

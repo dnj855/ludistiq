@@ -1,0 +1,21 @@
+<%# app/views/messages/_message.html.erb %>
+<%# Chaque message est dans son propre Turbo Frame pour être mis à jour individuellement %>
+<%= turbo_frame_tag message do %>
+  <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+    <div class="flex items-center mb-4">
+      <%# On pourrait ajouter un avatar ici plus tard %>
+      <div>
+        <p class="font-semibold text-slate-900"><%= message.sender.name %></p>
+        <p class="text-sm text-slate-500"><%= time_ago_in_words(message.created_at) %> ago</p>
+      </div>
+    </div>
+
+    <div class="prose max-w-none text-slate-700">
+      <%= message.content %>
+    </div>
+
+    <div class="mt-4 pt-4 border-t border-slate-100">
+      <%= render 'messages/actions', message: message %>
+    </div>
+  </div>
+<% end %>

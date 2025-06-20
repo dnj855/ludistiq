@@ -1,0 +1,48 @@
+<%# app/views/messages/show.html.erb %>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-6">
+    <%= link_to "← Retour au mur", event_messages_path(@event), class: "text-sm font-semibold text-indigo-600 hover:text-indigo-800" %>
+  </div>
+
+  <h1 class="text-3xl font-bold text-slate-900 mb-6">Conversation privée</h1>
+
+  <%# Section pour le message original qui a démarré le thread %>
+  <div class="mb-8">
+    <h2 class="text-xs font-medium uppercase tracking-wider text-slate-500 mb-2">Message original</h2>
+    <%# On réutilise notre partiel pour afficher le message parent %>
+    <%= render 'message', message: @message %>
+  </div>
+
+  <%# Section pour les réponses %>
+  <div>
+    <h2 class="text-xs font-medium uppercase tracking-wider text-slate-500 mb-2">Réponses (<%= @replies.count %>)</h2>
+    <div class="space-y-4">
+      <% if @replies.any? %>
+        <% @replies.each do |reply| %>
+          <div class="bg-slate-50 p-4 rounded-lg ml-8"> <%# On indente les réponses %>
+            <div class="flex items-center mb-2">
+              <div>
+                <p class="font-semibold text-slate-800"><%= reply.sender.name %></p>
+                <p class="text-xs text-slate-500"><%= time_ago_in_words(reply.created_at) %> ago</p>
+              </div>
+            </div>
+            <div class="prose prose-sm max-w-none text-slate-600">
+              <%= reply.content %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-slate-500 ml-8">Pas encore de réponse.</p>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Section pour ajouter une nouvelle réponse %>
+  <div class="mt-8 pt-6 border-t border-slate-200">
+    <h2 class="text-lg font-semibold text-slate-800 mb-4">Votre réponse</h2>
+    <%# On réutilise le partiel du formulaire. On pré-remplit un nouveau message lié au parent. %>
+    <%= render 'form', message: @event.messages.new(parent: @message), event: @event %>
+  </div>
+
+</div>

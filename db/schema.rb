@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_19_171958) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_20_083608) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,6 +50,18 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_19_171958) do
     t.index ["zone_id"], name: "index_games_on_zone_id"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.text "content"
+    t.bigint "event_id", null: false
+    t.bigint "sender_id", null: false
+    t.bigint "parent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_messages_on_event_id"
+    t.index ["parent_id"], name: "index_messages_on_parent_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
+  end
+
   create_table "missions", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -69,6 +81,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_19_171958) do
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_participations_on_event_id"
     t.index ["user_id"], name: "index_participations_on_user_id"
+  end
+
+  create_table "reactions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "message_id", null: false
+    t.string "emoji"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_id"], name: "index_reactions_on_message_id"
+    t.index ["user_id", "message_id"], name: "index_reactions_on_user_id_and_message_id", unique: true
+    t.index ["user_id"], name: "index_reactions_on_user_id"
   end
 
   create_table "skills", force: :cascade do |t|
@@ -107,9 +130,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_19_171958) do
   add_foreign_key "assignments", "users"
   add_foreign_key "games", "events"
   add_foreign_key "games", "zones"
+  add_foreign_key "messages", "events"
+  add_foreign_key "messages", "messages", column: "parent_id"
+  add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "missions", "zones"
   add_foreign_key "participations", "events"
   add_foreign_key "participations", "users"
+  add_foreign_key "reactions", "messages"
+  add_foreign_key "reactions", "users"
   add_foreign_key "skills", "games"
   add_foreign_key "skills", "users"
   add_foreign_key "zones", "events"

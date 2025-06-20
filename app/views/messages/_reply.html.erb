@@ -1,0 +1,8 @@
+<%# app/views/messages/_reply.html.erb %>
+<%# Ce partiel est la réponse que Turbo attend. Il contient le bon turbo-frame. %>
+<%= turbo_frame_tag dom_id(message.parent, "reply_form") do %>
+  <div class="mt-4 p-4 bg-slate-50 rounded-md border border-slate-200">
+    <h3 class="font-semibold text-slate-800 mb-2">Votre réponse privée :</h3>
+    <%= render 'form', message: message, event: event %>
+  </div>
+<% end %>

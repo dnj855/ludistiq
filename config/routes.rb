@@ -5,14 +5,17 @@ Rails.application.routes.draw do
     resources :games, only: %i[new create index] do
       post 'bgg_search', on: :collection
     end
-    member do
-      get :participants
-      get :my_skills
-    end
     resources :zones, except: [:show] do
       resources :missions do
         resources :assignments, only: %i[create destroy]
       end
+    end
+    member do
+      get :participants
+      get :my_skills
+    end
+    resources :messages, only: %i[index new create show] do
+      resources :reactions, only: %i[create destroy]
     end
   end
 

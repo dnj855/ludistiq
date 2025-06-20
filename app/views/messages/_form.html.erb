@@ -1,0 +1,31 @@
+<%# app/views/messages/_form.html.erb %>
+
+<%# Le 'model' est un tableau [event, message] pour que Rails construise l'URL imbriquée correctement %>
+<%= form_with(model: [event, message], class: "mt-4") do |f| %>
+
+  <%# C'est une bonne pratique de toujours prévoir un affichage pour les erreurs %>
+  <% if f.object.errors.any? %>
+    <div class="mb-4 p-4 bg-rose-100 text-rose-800 border border-rose-200 rounded-md">
+      <h2 class="font-bold"><%= pluralize(f.object.errors.count, "erreur a empêché", "erreurs ont empêché") %> la sauvegarde de ce message :</h2>
+      <ul class="list-disc list-inside">
+        <% f.object.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <%= f.label :content, "Votre message", class: "block text-sm font-medium leading-6 text-slate-900" %>
+    <%= f.text_area :content, rows: 5, class: "mt-2 block w-full rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+  </div>
+
+  <%# Ce champ caché est la clé pour gérer les réponses. Il sera rempli automatiquement. %>
+  <%= f.hidden_field :parent_id %>
+
+  <div class="flex items-center gap-4">
+    <%# Le texte du bouton s'adapte au contexte %>
+    <%= f.submit (message.parent_id.present? ? "Envoyer la réponse" : "Publier le message"), class: "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold text-white bg-indigo-600 shadow-sm transition-colors hover:bg-indigo-700" %>
+    <%= link_to "Annuler", event_messages_path(event), class: "text-sm font-semibold text-slate-600" %>
+  </div>
+<% end %>

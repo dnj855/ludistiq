@@ -1,0 +1,45 @@
+<%# app/views/messages/_actions.html.erb %>
+
+<%# On cherche d'abord si une réaction de l'utilisateur courant existe pour ce message %>
+<% user_reaction = message.reactions.find_by(user: current_user) %>
+
+<div class="flex items-center justify-between">
+  <div class="flex items-center gap-4">
+    <%# --- Bouton de réaction dynamique --- %>
+    <% if user_reaction %>
+      <%# L'utilisateur a déjà réagi : on affiche un bouton pour "unliker" (destroy) %>
+      <%= button_to event_message_reaction_path(@event, message, user_reaction),
+                    method: :delete,
+                    # On applique une classe CSS pour montrer que le bouton est "actif"
+                    class: "flex items-center gap-2 text-indigo-600 transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 18.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a2 2 0 0 1 1.79 1.11L15 5.88Z"/></svg>
+        <span class="text-sm font-medium"><%= message.reactions.count %></span>
+      <% end %>
+    <% else %>
+      <%# L'utilisateur n'a pas réagi : on affiche un bouton pour "liker" (create) %>
+      <%= button_to event_message_reactions_path(@event, message),
+                    method: :post,
+                    class: "flex items-center gap-2 text-slate-600 hover:text-indigo-600 transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 18.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a2 2 0 0 1 1.79 1.11L15 5.88Z"/></svg>
+        <span class="text-sm font-medium"><%= message.reactions.count %></span>
+      <% end %>
+    <% end %>
+
+    <%# Le reste des actions ne change pas %>
+    <%= link_to new_event_message_path(@event, parent_id: message.id),
+                data: { turbo_frame: dom_id(message, "reply_form") },
+                class: "flex items-center gap-2 text-slate-600 hover:text-indigo-600 transition-colors" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span class="text-sm font-medium">Répondre en privé</span>
+    <% end %>
+
+    <% if message.replies.any? %>
+      <%= link_to "Voir les #{message.replies.count} réponses",
+                  event_message_path(@event, message),
+                  data: { turbo_frame: "_top" },
+                  class: "text-sm font-semibold text-indigo-600 hover:text-indigo-800" %>
+    <% end %>
+  </div>
+</div>
+
+<turbo-frame id="<%= dom_id(message, 'reply_form') %>"></turbo-frame>
