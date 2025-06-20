@@ -2,21 +2,21 @@
 
 <!-- Recherche BoardGameGeek (seulement pour les nouveaux jeux) -->
 <% if game.title.blank? %>
-  <div class="mb-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+  <div class="mb-8 p-6 bg-indigo-50 border border-indigo-200 rounded-xl">
     <div class="flex items-center mb-4">
-      <svg class="w-6 h-6 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-6 h-6 text-indigo-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
       </svg>
-      <h3 class="text-lg font-medium text-blue-900">Recherche BoardGameGeek</h3>
+      <h3 class="text-lg font-semibold text-indigo-900">Recherche BoardGameGeek</h3>
     </div>
-    <p class="text-sm text-blue-700 mb-4">
+    <p class="text-sm text-indigo-700 mb-4">
       Recherchez votre jeu dans la base de données BoardGameGeek pour importer automatiquement ses informations.
     </p>
     
     <%= form_with(url: bgg_search_event_games_path(@event), method: :post, data: { controller: "bgg-search", action: "keyup->bgg-search#search" }, class: "space-y-4") do |f| %>
       <%= text_field_tag :query, nil, 
             placeholder: "Tapez le nom du jeu à rechercher...", 
-            class: "block w-full px-4 py-3 border border-blue-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm placeholder-blue-400" %>
+            class: "block w-full rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
     <% end %>
 
     <div id="bgg_search_results" class="mt-4"></div>
@@ -24,10 +24,10 @@
 
   <div class="relative">
     <div class="absolute inset-0 flex items-center">
-      <div class="w-full border-t border-gray-300" />
+      <div class="w-full border-t border-slate-300" />
     </div>
     <div class="relative flex justify-center text-sm">
-      <span class="px-4 bg-gray-50 text-gray-500 font-medium">ou remplissez manuellement</span>
+      <span class="px-4 bg-white text-slate-500 font-medium">ou remplissez manuellement</span>
     </div>
   </div>
 <% end %>
@@ -38,8 +38,8 @@
     <!-- Messages d'erreur -->
     <% if f.object.errors.any? %>
       <div class="mb-4 p-3 bg-rose-100 text-rose-800 rounded-lg">
-        <h2 class="font-bold"><%= pluralize(f.object.errors.count, "erreur") %> :</h2>
-        <ul>
+        <h2 class="font-semibold"><%= pluralize(f.object.errors.count, "erreur") %> :</h2>
+        <ul class="mt-1 text-sm">
           <% f.object.errors.full_messages.each do |message| %>
             <li><%= message %></li>
           <% end %>
@@ -48,9 +48,9 @@
     <% end %>
 
     <!-- Informations de base -->
-    <div class="bg-white border border-gray-200 rounded-lg p-6">
-      <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
-        <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="bg-white border border-slate-200 rounded-xl p-6">
+      <h3 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
+        <svg class="w-5 h-5 mr-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         Informations générales
@@ -67,7 +67,7 @@
                 required: true
               )) %>
           <% if f.object.errors.has_key?(:title) %>
-            <p class="mt-2 text-sm text-red-600">
+            <p class="mt-2 text-sm text-rose-600">
               <%= f.object.errors.full_messages_for(:title).to_sentence %>
             </p>
           <% end %>
@@ -75,14 +75,16 @@
 
         <!-- Durée -->
         <div>
-          <%= f.label :duration, "Durée (en minutes)", class: "block text-sm font-medium text-gray-700 mb-2" %>
-          <%= f.number_field :duration, 
-                class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
-                placeholder: "Ex: 60",
-                min: 1 %>
-          <p class="mt-1 text-sm text-gray-500">Durée approximative d'une partie</p>
+          <%= f.label :duration, "Durée (en minutes)", class: "block text-sm font-medium leading-6 text-slate-900" %>
+          <div class="mt-2">
+            <%= f.number_field :duration, 
+                  class: "block w-full rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6",
+                  placeholder: "Ex: 60",
+                  min: 1 %>
+          </div>
+          <p class="mt-1 text-sm text-slate-600">Durée approximative d'une partie</p>
           <% if f.object.errors.has_key?(:duration) %>
-            <p class="mt-2 text-sm text-red-600">
+            <p class="mt-2 text-sm text-rose-600">
               <%= f.object.errors.full_messages_for(:duration).to_sentence %>
             </p>
           <% end %>
@@ -91,25 +93,29 @@
         <!-- Nombre de joueurs -->
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <%= f.label :min_players, "Min joueurs", class: "block text-sm font-medium text-gray-700 mb-2" %>
-            <%= f.number_field :min_players, 
-                  class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
-                  placeholder: "2",
-                  min: 1 %>
+            <%= f.label :min_players, "Min joueurs", class: "block text-sm font-medium leading-6 text-slate-900" %>
+            <div class="mt-2">
+              <%= f.number_field :min_players, 
+                    class: "block w-full rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6",
+                    placeholder: "2",
+                    min: 1 %>
+            </div>
             <% if f.object.errors.has_key?(:min_players) %>
-              <p class="mt-2 text-sm text-red-600">
+              <p class="mt-2 text-sm text-rose-600">
                 <%= f.object.errors.full_messages_for(:min_players).to_sentence %>
               </p>
             <% end %>
           </div>
           <div>
-            <%= f.label :max_players, "Max joueurs", class: "block text-sm font-medium text-gray-700 mb-2" %>
-            <%= f.number_field :max_players, 
-                  class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
-                  placeholder: "4",
-                  min: 1 %>
+            <%= f.label :max_players, "Max joueurs", class: "block text-sm font-medium leading-6 text-slate-900" %>
+            <div class="mt-2">
+              <%= f.number_field :max_players, 
+                    class: "block w-full rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6",
+                    placeholder: "4",
+                    min: 1 %>
+            </div>
             <% if f.object.errors.has_key?(:max_players) %>
-              <p class="mt-2 text-sm text-red-600">
+              <p class="mt-2 text-sm text-rose-600">
                 <%= f.object.errors.full_messages_for(:max_players).to_sentence %>
               </p>
             <% end %>
@@ -119,14 +125,16 @@
 
       <!-- Description -->
       <div class="mt-6">
-        <%= f.label :description, class: "block text-sm font-medium text-gray-700 mb-2" %>
-        <%= f.text_area :description, 
-              rows: 4,
-              class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors resize-y",
-              placeholder: "Décrivez brièvement le jeu, ses mécaniques, son thème..." %>
-        <p class="mt-1 text-sm text-gray-500">Description optionnelle du jeu</p>
+        <%= f.label :description, class: "block text-sm font-medium leading-6 text-slate-900" %>
+        <div class="mt-2">
+          <%= f.text_area :description, 
+                rows: 4,
+                class: "block w-full rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 resize-y",
+                placeholder: "Décrivez brièvement le jeu, ses mécaniques, son thème..." %>
+        </div>
+        <p class="mt-1 text-sm text-slate-600">Description optionnelle du jeu</p>
         <% if f.object.errors.has_key?(:description) %>
-          <p class="mt-2 text-sm text-red-600">
+          <p class="mt-2 text-sm text-rose-600">
             <%= f.object.errors.full_messages_for(:description).to_sentence %>
           </p>
         <% end %>
@@ -134,9 +142,9 @@
     </div>
 
     <!-- Informations de gestion -->
-    <div class="bg-white border border-gray-200 rounded-lg p-6">
-      <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
-        <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="bg-white border border-slate-200 rounded-xl p-6">
+      <h3 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
+        <svg class="w-5 h-5 mr-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
         </svg>
         Gestion interne
@@ -151,9 +159,9 @@
                 label: "Propriétaire",
                 placeholder: "Nom du propriétaire"
               )) %>
-          <p class="mt-1 text-sm text-gray-500">Qui possède ce jeu ?</p>
+          <p class="mt-1 text-sm text-slate-600">Qui possède ce jeu ?</p>
           <% if f.object.errors.has_key?(:owner) %>
-            <p class="mt-2 text-sm text-red-600">
+            <p class="mt-2 text-sm text-rose-600">
               <%= f.object.errors.full_messages_for(:owner).to_sentence %>
             </p>
           <% end %>
@@ -161,15 +169,17 @@
 
         <!-- Nombre d'exemplaires -->
         <div>
-          <%= f.label :copies_count, "Nombre d'exemplaires", class: "block text-sm font-medium text-gray-700 mb-2" %>
-          <%= f.number_field :copies_count, 
-                class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
-                placeholder: "1",
-                min: 1,
-                value: f.object.copies_count || 1 %>
-          <p class="mt-1 text-sm text-gray-500">Combien d'exemplaires disponibles ?</p>
+          <%= f.label :copies_count, "Nombre d'exemplaires", class: "block text-sm font-medium leading-6 text-slate-900" %>
+          <div class="mt-2">
+            <%= f.number_field :copies_count, 
+                  class: "block w-full rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6",
+                  placeholder: "1",
+                  min: 1,
+                  value: f.object.copies_count || 1 %>
+          </div>
+          <p class="mt-1 text-sm text-slate-600">Combien d'exemplaires disponibles ?</p>
           <% if f.object.errors.has_key?(:copies_count) %>
-            <p class="mt-2 text-sm text-red-600">
+            <p class="mt-2 text-sm text-rose-600">
               <%= f.object.errors.full_messages_for(:copies_count).to_sentence %>
             </p>
           <% end %>
@@ -177,17 +187,19 @@
       </div>
 
       <!-- Zone d'installation -->
-      <div class="sm:col-span-2">
-        <%= f.label :zone_id, "Zone d'installation", class: "block text-sm font-medium text-gray-700 mb-2" %>
-        <%= f.collection_select :zone_id, 
-              @event.zones.order(:name), 
-              :id, 
-              :name,
-              { prompt: "Sélectionnez une zone (optionnel)" },
-              { class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors" } %>
-        <p class="mt-1 text-sm text-gray-500">Dans quelle zone ce jeu sera-t-il installé ?</p>
+      <div class="mt-6">
+        <%= f.label :zone_id, "Zone d'installation", class: "block text-sm font-medium leading-6 text-slate-900" %>
+        <div class="mt-2">
+          <%= f.collection_select :zone_id, 
+                @event.zones.order(:name), 
+                :id, 
+                :name,
+                { prompt: "Sélectionnez une zone (optionnel)" },
+                { class: "block w-full rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
+        </div>
+        <p class="mt-1 text-sm text-slate-600">Dans quelle zone ce jeu sera-t-il installé ?</p>
         <% if f.object.errors.has_key?(:zone_id) %>
-          <p class="mt-2 text-sm text-red-600">
+          <p class="mt-2 text-sm text-rose-600">
             <%= f.object.errors.full_messages_for(:zone_id).to_sentence %>
           </p>
         <% end %>
@@ -200,8 +212,10 @@
 
     <!-- Actions -->
     <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-6">
-      <%= f.submit "Enregistrer le jeu", 
-            class: "w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" %>
+      <%= f.submit game.persisted? ? "Mettre à jour le jeu" : "Ajouter le jeu",
+            class: "w-full sm:w-auto inline-flex justify-center items-center rounded-md px-4 py-2 text-sm font-semibold text-white bg-indigo-600 shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed" %>
+      <%= link_to "Annuler", event_games_path(@event),
+            class: "w-full sm:w-auto inline-flex justify-center items-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
     </div>
   <% end %>
 </div>

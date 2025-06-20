@@ -1,18 +1,367 @@
-<h1>Staffing pour : <%= @mission.name %></h1>
-<p>Zone : <%= @zone.name %> (<%= l @mission.start_time, format: :short %> - <%= l @mission.end_time, format: :short %>)</p>
+<% content_for :title, "#{@mission.name} - Staffing" %>
 
-<h2>Participants</h2>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Breadcrumb unifié -->
+  <nav class="flex mb-6" aria-label="Breadcrumb">
+    <ol role="list" class="flex items-center space-x-2 text-sm">
+      <li>
+        <%= link_to events_path, class: "text-slate-600 hover:text-slate-900 transition-colors" do %>
+          Événements
+        <% end %>
+      </li>
+      <li>
+        <svg class="flex-shrink-0 h-4 w-4 text-slate-400 mx-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+        </svg>
+      </li>
+      <li>
+        <%= link_to @event, class: "text-slate-600 hover:text-slate-900 transition-colors" do %>
+          <%= truncate(@event.title, length: 25) %>
+        <% end %>
+      </li>
+      <li>
+        <svg class="flex-shrink-0 h-4 w-4 text-slate-400 mx-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+        </svg>
+      </li>
+      <li>
+        <%= link_to event_zones_path(@event), class: "text-slate-600 hover:text-slate-900 transition-colors" do %>
+          Zones
+        <% end %>
+      </li>
+      <li>
+        <svg class="flex-shrink-0 h-4 w-4 text-slate-400 mx-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+        </svg>
+      </li>
+      <li>
+        <%= link_to event_zone_path(@event, @zone), class: "text-slate-600 hover:text-slate-900 transition-colors" do %>
+          <%= truncate(@zone.name, length: 20) %>
+        <% end %>
+      </li>
+      <li>
+        <svg class="flex-shrink-0 h-4 w-4 text-slate-400 mx-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+        </svg>
+      </li>
+      <li>
+        <%= link_to event_zone_missions_path(@event, @zone), class: "text-slate-600 hover:text-slate-900 transition-colors" do %>
+          Missions
+        <% end %>
+      </li>
+      <li>
+        <svg class="flex-shrink-0 h-4 w-4 text-slate-400 mx-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+        </svg>
+      </li>
+      <li class="text-slate-900 font-medium" aria-current="page">
+        <%= truncate(@mission.name, length: 25) %>
+      </li>
+    </ol>
+  </nav>
 
-<div id="participants_list">
-  <% @participants.each do |user| %>
-    <div class="participant-row" id="<%= dom_id(user, 'assignment') %>">
-      <span><%= user.name %></span>
-      <span>
-        Score compétence : <%= ZoneCompetenceScoreCalculator.call(user: user, zone: @zone) %>%
-      </span>
-      <span>
-        <%= render 'assignments/assignment_button', user: user, mission: @mission %>
-      </span>
+  <!-- En-tête de la mission -->
+  <div class="bg-white rounded-xl shadow-sm ring-1 ring-inset ring-slate-200 mb-8">
+    <div class="px-6 py-8">
+      <div class="flex items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-12 h-12 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-xl flex items-center justify-center ring-2 ring-white shadow-sm">
+                <svg class="w-7 h-7 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <div class="ml-4">
+              <h1 class="text-2xl font-bold text-slate-900">
+                <%= @mission.name %>
+              </h1>
+              <p class="text-sm text-slate-600 mt-1">
+                Staffing et gestion d'équipe
+              </p>
+            </div>
+          </div>
+
+          <!-- Informations de la mission -->
+          <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Zone -->
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <div class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                  <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-slate-900">Zone</p>
+                <p class="text-xs text-slate-600"><%= @zone.name %></p>
+              </div>
+            </div>
+
+            <!-- Horaires -->
+            <% if @mission.start_time.present? || @mission.end_time.present? %>
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-slate-900">Horaires</p>
+                  <p class="text-xs text-slate-600">
+                    <% if @mission.start_time.present? && @mission.end_time.present? %>
+                      <%= l @mission.start_time, format: :short %> - <%= l @mission.end_time, format: :short %>
+                    <% elsif @mission.start_time.present? %>
+                      À partir de <%= l @mission.start_time, format: :short %>
+                    <% elsif @mission.end_time.present? %>
+                      Jusqu'à <%= l @mission.end_time, format: :short %>
+                    <% end %>
+                  </p>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- Participants assignés -->
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-slate-900">Équipe</p>
+                <p class="text-xs text-slate-600">
+                  <%= pluralize(@mission.assignments.count, 'participant') %> assigné<%= 's' if @mission.assignments.count > 1 %>
+                </p>
+              </div>
+            </div>
+
+            <!-- Participants disponibles -->
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm font-medium text-slate-900">Disponibles</p>
+                <p class="text-xs text-slate-600">
+                  <%= pluralize(@participants.count, 'participant') %> au total
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description de la mission -->
+          <% if @mission.description.present? %>
+            <div class="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
+              <div class="flex items-start">
+                <div class="flex-shrink-0">
+                  <svg class="w-5 h-5 text-slate-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-slate-900 mb-1">Description</h3>
+                  <p class="text-sm text-slate-600 leading-relaxed">
+                    <%= simple_format(@mission.description) %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Actions principales -->
+        <div class="ml-6 flex flex-col space-y-2">
+          <%= render(ButtonComponent.new(path: edit_event_zone_mission_path(@event, @zone, @mission), style: :secondary)) do %>
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Modifier la mission
+          <% end %>
+        </div>
+      </div>
     </div>
-  <% end %>
+  </div>
+
+  <!-- Section Participants -->
+  <div class="bg-white rounded-xl shadow-sm ring-1 ring-inset ring-slate-200">
+    <div class="px-6 py-6">
+      <!-- En-tête de la section -->
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-xl font-semibold text-slate-900">
+            Gestion de l'équipe
+          </h2>
+          <p class="text-sm text-slate-600 mt-1">
+            Assignez les participants les plus compétents pour cette mission
+          </p>
+        </div>
+        <div class="flex items-center space-x-4">
+          <!-- Statistiques rapides -->
+          <div class="text-right">
+            <p class="text-sm font-medium text-slate-900">
+              <%= @mission.assignments.count %>/<%= @participants.count %>
+            </p>
+            <p class="text-xs text-slate-600">Assignés/Disponibles</p>
+          </div>
+          <% if @mission.assignments.any? %>
+            <% 
+              scores = @mission.assignments.joins(:user).map { |assignment| ZoneCompetenceScoreCalculator.call(user: assignment.user, zone: @mission.zone) }
+              avg_score = scores.sum.to_f / scores.length
+            %>
+            <div class="text-right">
+              <p class="text-sm font-medium text-slate-900">
+                <%= number_with_precision(avg_score, precision: 0) %>%
+              </p>
+              <p class="text-xs text-slate-600">Score moyen équipe</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Légende des scores -->
+      <div class="mb-6 p-4 bg-gradient-to-r from-slate-50 to-blue-50 rounded-lg border border-slate-200">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <svg class="w-5 h-5 text-slate-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-sm font-medium text-slate-900">Niveau de compétence pour cette zone :</span>
+          </div>
+          <div class="flex items-center space-x-6 text-xs">
+            <div class="flex items-center">
+              <div class="w-3 h-3 bg-emerald-500 rounded-full mr-2"></div>
+              <span class="text-slate-600">Expert (80-100%)</span>
+            </div>
+            <div class="flex items-center">
+              <div class="w-3 h-3 bg-amber-500 rounded-full mr-2"></div>
+              <span class="text-slate-600">Connaisseur (40-79%)</span>
+            </div>
+            <div class="flex items-center">
+              <div class="w-3 h-3 bg-slate-400 rounded-full mr-2"></div>
+              <span class="text-slate-600">Débutant (0-39%)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liste des participants -->
+      <% if @participants.any? %>
+        <div id="participants_list" class="space-y-3">
+          <% @participants.each do |user| %>
+            <% score = ZoneCompetenceScoreCalculator.call(user: user, zone: @mission.zone) %>
+            <% is_assigned = @mission.assignments.joins(:user).exists?(user: user) %>
+            <div class="participant-row bg-slate-50 rounded-lg p-4 hover:bg-slate-100 transition-colors" id="<%= dom_id(user, 'assignment') %>">
+              <div class="flex items-center justify-between">
+                <!-- Informations utilisateur -->
+                <div class="flex items-center flex-1">
+                  <!-- Avatar -->
+                  <div class="flex-shrink-0">
+                    <div class="w-10 h-10 bg-gradient-to-br from-slate-200 to-slate-300 rounded-full flex items-center justify-center ring-2 ring-white shadow-sm">
+                      <span class="text-sm font-semibold text-slate-700">
+                        <%= user.name.first.upcase %>
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <!-- Nom et statut -->
+                  <div class="ml-4 flex-1">
+                    <div class="flex items-center">
+                      <h3 class="text-sm font-semibold text-slate-900">
+                        <%= user.name %>
+                      </h3>
+                      <% if is_assigned %>
+                        <span class="ml-2 inline-flex items-center gap-x-1.5 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 ring-1 ring-inset ring-emerald-200">
+                          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          Assigné
+                        </span>
+                      <% end %>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-0.5">
+                      Participant à l'événement
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Score de compétence -->
+                <div class="flex items-center space-x-4">
+                  <div class="text-right">
+                    <div class="flex items-center">
+                      <!-- Indicateur visuel du score -->
+                      <div class="flex items-center mr-3">
+                        <% if score >= 80 %>
+                          <div class="w-3 h-3 bg-emerald-500 rounded-full mr-2"></div>
+                          <span class="text-sm font-semibold text-emerald-700">Expert</span>
+                        <% elsif score >= 40 %>
+                          <div class="w-3 h-3 bg-amber-500 rounded-full mr-2"></div>
+                          <span class="text-sm font-semibold text-amber-700">Connaisseur</span>
+                        <% else %>
+                          <div class="w-3 h-3 bg-slate-400 rounded-full mr-2"></div>
+                          <span class="text-sm font-semibold text-slate-600">Débutant</span>
+                        <% end %>
+                      </div>
+                      <span class="text-lg font-bold text-slate-900 min-w-[3rem] text-right">
+                        <%= score %>%
+                      </span>
+                    </div>
+                    <p class="text-xs text-slate-500">Score compétence</p>
+                  </div>
+
+                  <!-- Bouton d'action -->
+                  <div class="ml-4">
+                    <%= render 'assignments/assignment_button', user: user, mission: @mission %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <!-- État vide -->
+        <div class="text-center py-12">
+          <div class="mx-auto w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6">
+            <svg class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-900 mb-2">Aucun participant disponible</h3>
+          <p class="text-sm text-slate-600 mb-6">
+            Il n'y a actuellement aucun participant inscrit à cet événement.
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Actions de navigation -->
+  <div class="mt-8 pt-6 border-t border-slate-200">
+    <div class="flex flex-col sm:flex-row gap-3">
+      <%= render(ButtonComponent.new(path: event_zone_missions_path(@event, @zone), style: :secondary)) do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Retour aux missions
+      <% end %>
+      <%= render(ButtonComponent.new(path: event_zone_path(@event, @zone), style: :secondary)) do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        Voir la zone
+      <% end %>
+    </div>
+  </div>
 </div>

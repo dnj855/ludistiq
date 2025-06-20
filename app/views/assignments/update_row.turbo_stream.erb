@@ -1,11 +1,69 @@
 <%= turbo_stream.update(dom_id(@user, 'assignment')) do %>
-  <div class="participant-row" id="<%= dom_id(@user, 'assignment') %>">
-    <span><%= @user.name %></span>
-    <span>
-      Score compétence : <%= @user.competence_score_for(@zone) %>%
-    </span>
-    <span>
-      <%= render 'assignments/assignment_button', user: @user, mission: @mission %>
-    </span>
+  <% score = ZoneCompetenceScoreCalculator.call(user: @user, zone: @mission.zone) %>
+  <% is_assigned = @mission.assignments.joins(:user).exists?(user: @user) %>
+  <div class="participant-row bg-slate-50 rounded-lg p-4 hover:bg-slate-100 transition-colors" id="<%= dom_id(@user, 'assignment') %>">
+    <div class="flex items-center justify-between">
+      <!-- Informations utilisateur -->
+      <div class="flex items-center flex-1">
+        <!-- Avatar -->
+        <div class="flex-shrink-0">
+          <div class="w-10 h-10 bg-gradient-to-br from-slate-200 to-slate-300 rounded-full flex items-center justify-center ring-2 ring-white shadow-sm">
+            <span class="text-sm font-semibold text-slate-700">
+              <%= @user.name.first.upcase %>
+            </span>
+          </div>
+        </div>
+        
+        <!-- Nom et statut -->
+        <div class="ml-4 flex-1">
+          <div class="flex items-center">
+            <h3 class="text-sm font-semibold text-slate-900">
+              <%= @user.name %>
+            </h3>
+            <% if is_assigned %>
+              <span class="ml-2 inline-flex items-center gap-x-1.5 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 ring-1 ring-inset ring-emerald-200">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Assigné
+              </span>
+            <% end %>
+          </div>
+          <p class="text-xs text-slate-600 mt-0.5">
+            Participant à l'événement
+          </p>
+        </div>
+      </div>
+
+      <!-- Score de compétence -->
+      <div class="flex items-center space-x-4">
+        <div class="text-right">
+          <div class="flex items-center">
+            <!-- Indicateur visuel du score -->
+            <div class="flex items-center mr-3">
+              <% if score >= 80 %>
+                <div class="w-3 h-3 bg-emerald-500 rounded-full mr-2"></div>
+                <span class="text-sm font-semibold text-emerald-700">Expert</span>
+              <% elsif score >= 40 %>
+                <div class="w-3 h-3 bg-amber-500 rounded-full mr-2"></div>
+                <span class="text-sm font-semibold text-amber-700">Connaisseur</span>
+              <% else %>
+                <div class="w-3 h-3 bg-slate-400 rounded-full mr-2"></div>
+                <span class="text-sm font-semibold text-slate-600">Débutant</span>
+              <% end %>
+            </div>
+            <span class="text-lg font-bold text-slate-900 min-w-[3rem] text-right">
+              <%= score %>%
+            </span>
+          </div>
+          <p class="text-xs text-slate-500">Score compétence</p>
+        </div>
+
+        <!-- Bouton d'action -->
+        <div class="ml-4">
+          <%= render 'assignments/assignment_button', user: @user, mission: @mission %>
+        </div>
+      </div>
+    </div>
   </div>
 <% end %>

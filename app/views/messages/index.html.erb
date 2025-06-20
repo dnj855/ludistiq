@@ -1,23 +1,191 @@
 <%# app/views/messages/index.html.erb %>
-<div class="container mx-auto px-4 py-8">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold text-slate-900">Mur de communication</h1>
-    <%# Ce bouton n'apparaît que pour les admins de l'événement %>
-    <% if current_user_is_event_admin? %>
-      <%= render(ButtonComponent.new(path: new_event_message_path(@event), style: :primary)) do %>
-        Nouveau Message
+<% content_for :title, "Messages - #{@event.title}" %>
+
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header avec navigation et titre -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <!-- Breadcrumb unifié -->
+      <nav class="flex mb-4" aria-label="Breadcrumb">
+        <ol role="list" class="flex items-center space-x-2 text-sm">
+          <li>
+            <%= link_to events_path, class: "text-slate-600 hover:text-slate-900 transition-colors" do %>
+              Événements
+            <% end %>
+          </li>
+          <li>
+            <svg class="flex-shrink-0 h-4 w-4 text-slate-400 mx-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+            </svg>
+          </li>
+          <li>
+            <%= link_to @event, class: "text-slate-600 hover:text-slate-900 transition-colors" do %>
+              <%= truncate(@event.title, length: 25) %>
+            <% end %>
+          </li>
+          <li>
+            <svg class="flex-shrink-0 h-4 w-4 text-slate-400 mx-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+            </svg>
+          </li>
+          <li class="text-slate-900 font-medium" aria-current="page">
+            Messages
+          </li>
+        </ol>
+      </nav>
+
+      <h1 class="text-3xl font-bold text-slate-900">Mur de communication</h1>
+      <p class="mt-2 text-sm text-slate-600">
+        Échangez avec les participants de "<span class="font-semibold text-slate-900"><%= @event.title %></span>"
+      </p>
+    </div>
+    
+    <!-- Actions -->
+    <div class="flex items-center space-x-3 mt-4 sm:mt-0">
+      <%= render(ButtonComponent.new(path: event_path(@event), style: :secondary)) do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Retour à l'événement
       <% end %>
-    <% end %>
+      
+      <% if current_user_is_event_admin? %>
+        <%= render(ButtonComponent.new(path: new_event_message_path(@event), style: :primary)) do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Nouveau message
+        <% end %>
+      <% end %>
+    </div>
   </div>
 
-  <%# Le conteneur pour notre liste de messages %>
-  <div id="messages" class="space-y-6">
+  <!-- Statistiques rapides -->
+  <div class="mt-8">
+    <div class="flex items-center space-x-6">
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </div>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm font-medium text-slate-900">
+            <%= pluralize(@messages.count, 'message') %> publié<%= 's' if @messages.count > 1 %>
+          </p>
+          <p class="text-xs text-slate-600">Communications partagées</p>
+        </div>
+      </div>
+      
+      <% if @messages.any? %>
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+              <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-slate-900">
+              Dernière activité
+            </p>
+            <p class="text-xs text-slate-600">
+              <%= time_ago_in_words(@messages.first.created_at) %> 
+            </p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Liste des messages -->
+  <div class="mt-8">
     <% if @messages.any? %>
-      <%# 'render @messages' va automatiquement utiliser le partial '_message.html.erb' pour chaque message %>
-      <%= render @messages %>
+      <!-- En-tête de la liste -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold text-slate-900">
+            Messages récents
+          </h2>
+          <p class="text-sm text-slate-600">
+            <%= @messages.count %> message<%= 's' if @messages.count > 1 %>
+          </p>
+        </div>
+        <div class="mt-2 h-px bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200"></div>
+      </div>
+
+      <!-- Conteneur des messages -->
+      <div id="messages" class="space-y-6">
+        <%= render @messages %>
+      </div>
+
+      <!-- Actions de bas de page -->
+      <div class="mt-8 pt-6 border-t border-slate-200">
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <%= render(ButtonComponent.new(path: event_path(@event), style: :secondary)) do %>
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Retour à l'événement
+          <% end %>
+          
+          <% if current_user_is_event_admin? %>
+            <%= render(ButtonComponent.new(path: new_event_message_path(@event), style: :primary)) do %>
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              Publier un nouveau message
+            <% end %>
+          <% end %>
+        </div>
+      </div>
     <% else %>
-      <div class="text-center text-slate-500 py-10">
-        <p>Aucun message pour le moment.</p>
+      <!-- État vide modernisé -->
+      <div class="text-center py-16">
+        <div class="mx-auto w-32 h-32 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mb-8">
+          <svg class="w-16 h-16 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+        <div class="max-w-md mx-auto">
+          <h3 class="text-2xl font-semibold text-slate-900 mb-3">Aucun message</h3>
+          <p class="text-slate-600 leading-relaxed mb-8">
+            Le mur de communication est encore vide. 
+            <% if current_user_is_event_admin? %>
+              Commencez la conversation en publiant le premier message pour informer les participants.
+            <% else %>
+              Les messages des organisateurs apparaîtront ici.
+            <% end %>
+          </p>
+          <div class="space-y-3">
+            <% if current_user_is_event_admin? %>
+              <%= render(ButtonComponent.new(path: new_event_message_path(@event), style: :primary)) do %>
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Publier le premier message
+              <% end %>
+            <% else %>
+              <%= render(ButtonComponent.new(path: event_path(@event), style: :primary)) do %>
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                Voir l'événement
+              <% end %>
+            <% end %>
+            <p class="text-xs text-slate-500">
+              <% if current_user_is_event_admin? %>
+                Les messages sont visibles par tous les participants
+              <% else %>
+                Seuls les organisateurs peuvent publier des messages
+              <% end %>
+            </p>
+          </div>
+        </div>
       </div>
     <% end %>
   </div>

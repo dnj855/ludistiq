@@ -1,8 +1,8 @@
 <%= form_with(model: [@event, zone], class: "space-y-6") do |form| %>
   <% if zone.errors.any? %>
     <div class="mb-4 p-3 bg-rose-100 text-rose-800 rounded-lg">
-      <h2 class="font-bold"><%= pluralize(zone.errors.count, "erreur") %> :</h2>
-      <ul>
+      <h2 class="font-semibold"><%= pluralize(zone.errors.count, "erreur") %> :</h2>
+      <ul class="mt-1 text-sm">
         <% zone.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
@@ -20,7 +20,7 @@
           required: true
         )) %>
     <% if zone.errors.has_key?(:name) %>
-      <p class="mt-2 text-sm text-red-600">
+      <p class="mt-2 text-sm text-rose-600">
         <%= zone.errors.full_messages_for(:name).to_sentence %>
       </p>
     <% end %>
@@ -28,21 +28,23 @@
 
   <!-- Description -->
   <div>
-    <%= form.label :description, class: "block text-sm font-medium text-gray-700 mb-2" do %>
+    <%= form.label :description, class: "block text-sm font-medium leading-6 text-slate-900" do %>
       Description
     <% end %>
-    <%= form.text_area :description, 
-          rows: 4,
-          class: [
-            "appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 sm:text-sm transition-colors resize-y",
-            zone.errors.has_key?(:description) ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-          ],
-          placeholder: "Décrivez cette zone, le type de jeux qui y seront placés, l'ambiance souhaitée..." %>
-    <p class="mt-2 text-sm text-gray-500">
+    <div class="mt-2">
+      <%= form.text_area :description, 
+            rows: 4,
+            class: [
+              "block w-full rounded-md border-0 py-1.5 text-slate-900 shadow-sm ring-1 ring-inset placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 resize-y transition-colors",
+              zone.errors.has_key?(:description) ? "ring-rose-300 text-rose-900 placeholder:text-rose-300 focus:ring-rose-600" : "ring-slate-300"
+            ],
+            placeholder: "Décrivez cette zone, le type de jeux qui y seront placés, l'ambiance souhaitée..." %>
+    </div>
+    <p class="mt-2 text-sm text-slate-600">
       Ajoutez des détails sur cette zone pour aider les participants à s'orienter (niveau de difficulté, type de jeux, ambiance, etc.)
     </p>
     <% if zone.errors.has_key?(:description) %>
-      <p class="mt-2 text-sm text-red-600">
+      <p class="mt-2 text-sm text-rose-600">
         <%= zone.errors.full_messages_for(:description).to_sentence %>
       </p>
     <% end %>
@@ -51,7 +53,7 @@
   <!-- Actions -->
   <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-6">
     <%= form.submit zone.persisted? ? "Mettre à jour la zone" : "Créer la zone",
-          class: "w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" %>
+          class: "w-full sm:w-auto inline-flex justify-center items-center rounded-md px-4 py-2 text-sm font-semibold text-white bg-indigo-600 shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed" %>
     <%= render(ButtonComponent.new(path: event_zones_path(@event), style: :secondary)) do %>
       Annuler
     <% end %>

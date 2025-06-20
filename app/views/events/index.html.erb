@@ -1,6 +1,6 @@
-<% content_for :title, "Events" %>
+<% content_for :title, "Événements" %>
 
-<div class="w-full">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
   <!-- Header avec titre et action -->
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
     <div>
@@ -45,9 +45,42 @@
 
               <!-- Description -->
               <div class="mt-4">
-                <p class="text-sm text-slate-600 line-clamp-3">
-                  <%= truncate(event.description, length: 120) %>
-                </p>
+                <% if event.description.present? %>
+                  <p class="text-sm text-slate-600 line-clamp-3">
+                    <%= truncate(event.description, length: 120) %>
+                  </p>
+                <% else %>
+                  <p class="text-sm text-slate-400 italic">Aucune description</p>
+                <% end %>
+              </div>
+
+              <!-- Statistiques de l'événement -->
+              <div class="mt-4 flex items-center space-x-4">
+                <% if event.zones.any? %>
+                  <span class="inline-flex items-center gap-x-1.5 rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <%= pluralize(event.zones.count, 'zone') %>
+                  </span>
+                <% end %>
+                <% if event.games.any? %>
+                  <span class="inline-flex items-center gap-x-1.5 rounded-full bg-sky-100 px-2.5 py-0.5 text-xs font-medium text-sky-800">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    <%= pluralize(event.games.count, 'jeu') %>
+                  </span>
+                <% end %>
+                <% if event.participations.any? %>
+                  <span class="inline-flex items-center gap-x-1.5 rounded-full bg-violet-100 px-2.5 py-0.5 text-xs font-medium text-violet-800">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                    </svg>
+                    <%= pluralize(event.participations.count, 'participant') %>
+                  </span>
+                <% end %>
               </div>
 
               <!-- Actions -->

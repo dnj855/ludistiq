@@ -1,25 +1,144 @@
-<div class="container mx-auto px-4 py-8">
-  <div class="text-center mb-10">
-    <h1 class="text-4xl md:text-5xl font-bold text-slate-900">Bienvenue sur Ludistiq</h1>
-    <p class="mt-4 text-lg text-slate-600">Le système d'exploitation pour les festivals de jeux de société.</p>
+<div class="relative overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-slate-50">
+  <!-- Décoration d'arrière-plan -->
+  <div class="absolute inset-0">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-indigo-100/40 to-emerald-100/20 rounded-full blur-3xl"></div>
   </div>
+  
+  <div class="relative container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+    <!-- Hero Section -->
+    <div class="text-center mb-20">
+      <!-- Badge -->
+      <div class="mb-8">
+        <span class="inline-flex items-center gap-x-2 rounded-full bg-gradient-to-r from-indigo-500 to-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow-lg">
+          <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+          Événements publics
+        </span>
+      </div>
+      
+      <!-- Titre principal -->
+      <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl lg:text-7xl mb-6">
+        Bienvenue sur 
+        <span class="bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-600 bg-clip-text text-transparent">Ludistiq</span>
+      </h1>
+      
+      <!-- Sous-titre -->
+      <p class="mt-6 text-xl leading-relaxed text-slate-600 lg:text-2xl max-w-3xl mx-auto">
+        Le système d'exploitation pour les festivals de jeux de société. 
+        <strong class="text-slate-900">Découvrez nos événements</strong> et rejoignez la communauté.
+      </p>
+    </div>
 
-  <h2 class="text-3xl font-bold text-slate-900 mb-6">Nos Événements</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <% if @events.any? %>
-      <% @events.each do |event| %>
-        <%= link_to public_event_path(event), class: "block p-6 bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-slate-200" do %>
-          <h3 class="text-xl md:text-2xl font-semibold text-slate-900"><%= event.title %></h3>
-          <p class="text-slate-600 mt-2 line-clamp-3"><%= event.description %></p>
-          <div class="border-t border-slate-200 mt-4 pt-4">
-            <p class="text-sm font-medium text-indigo-600">
-              Du <%= l(event.start_date, format: :long) %> au <%= l(event.end_date, format: :long) %>
-            </p>
+    <!-- Section Événements -->
+    <div class="max-w-7xl mx-auto">
+      <!-- En-tête de section -->
+      <div class="flex items-center justify-between mb-12">
+        <div>
+          <h2 class="text-3xl font-bold text-slate-900 sm:text-4xl">Nos Événements</h2>
+          <p class="mt-2 text-lg text-slate-600">Festivals et événements ludiques à venir</p>
+        </div>
+        
+        <!-- Compteur d'événements -->
+        <% if @events.any? %>
+          <div class="flex items-center space-x-2">
+            <div class="w-3 h-3 bg-emerald-500 rounded-full"></div>
+            <span class="text-sm font-medium text-slate-600">
+              <%= pluralize(@events.count, 'événement') %> <%= @events.count > 1 ? 'disponibles' : 'disponible' %>
+            </span>
           </div>
         <% end %>
+      </div>
+
+      <!-- Grille d'événements -->
+      <% if @events.any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <% @events.each do |event| %>
+            <%= link_to public_event_path(event), class: "group relative overflow-hidden bg-white rounded-3xl shadow-sm ring-1 ring-slate-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+              <!-- Carte d'événement -->
+              <div class="p-8">
+                <!-- En-tête avec icône -->
+                <div class="flex items-start justify-between mb-6">
+                  <div class="flex-shrink-0">
+                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  
+                  <!-- Badge statut -->
+                  <div class="flex-shrink-0">
+                    <span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800 ring-1 ring-inset ring-emerald-200">
+                      Ouvert
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Contenu principal -->
+                <div class="mb-6">
+                  <h3 class="text-xl font-semibold text-slate-900 mb-3 group-hover:text-indigo-700 transition-colors">
+                    <%= event.title %>
+                  </h3>
+                  <p class="text-slate-600 leading-relaxed line-clamp-3">
+                    <%= event.description %>
+                  </p>
+                </div>
+
+                <!-- Footer avec dates -->
+                <div class="border-t border-slate-200 pt-6">
+                  <div class="flex items-center space-x-3">
+                    <div class="flex-shrink-0">
+                      <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-indigo-600">
+                        Du <%= l(event.start_date, format: :long) %>
+                      </p>
+                      <p class="text-sm text-slate-500">
+                        au <%= l(event.end_date, format: :long) %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Flèche d'action -->
+                <div class="absolute top-8 right-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <svg class="w-5 h-5 text-indigo-600 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Effet hover subtil -->
+              <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl"></div>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <!-- État vide élégant -->
+        <div class="text-center py-20">
+          <div class="mx-auto w-24 h-24 bg-gradient-to-br from-slate-100 to-slate-200 rounded-3xl flex items-center justify-center mb-8">
+            <svg class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-slate-900 mb-3">Aucun événement pour le moment</h3>
+          <p class="text-slate-600 max-w-md mx-auto leading-relaxed">
+            Les organisateurs n'ont pas encore publié d'événements. Revenez bientôt pour découvrir nos prochains festivals !
+          </p>
+          
+          <!-- CTA optionnel -->
+          <div class="mt-8">
+            <div class="inline-flex items-center space-x-2 text-sm text-slate-500">
+              <div class="w-2 h-2 bg-slate-300 rounded-full animate-pulse"></div>
+              <span>Nouveaux événements bientôt disponibles</span>
+            </div>
+          </div>
+        </div>
       <% end %>
-    <% else %>
-      <p class="text-slate-500">Aucun événement à afficher pour le moment.</p>
-    <% end %>
+    </div>
   </div>
 </div>

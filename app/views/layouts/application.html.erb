@@ -10,60 +10,124 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="min-h-screen bg-white font-sans">
+  <body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 font-sans antialiased">
     <%= render 'layouts/flash' %>
+    
     <!-- Header moderne avec design system -->
-    <header class="bg-white shadow-sm border-b border-slate-200">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <!-- Logo/Brand -->
+    <header class="relative bg-white/80 backdrop-blur-md shadow-lg border-b border-slate-200/50 sticky top-0 z-50">
+      <!-- Décoration subtile -->
+      <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/5 via-transparent to-emerald-500/5"></div>
+      
+      <div class="relative container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <!-- Logo/Brand modernisé -->
           <div class="flex-shrink-0">
-            <%= link_to root_path, class: "text-2xl font-bold text-slate-900 hover:text-indigo-600 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
-              Ludistiq
+            <%= link_to root_path, class: "group flex items-center space-x-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-xl" do %>
+              <!-- Icône logo -->
+              <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+              </div>
+              <!-- Texte logo -->
+              <div class="hidden sm:block">
+                <div class="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent group-hover:from-indigo-600 group-hover:to-indigo-800 transition-all">
+                  Ludistiq
+                </div>
+                <div class="text-xs text-slate-500 font-medium -mt-1">
+                  Festival OS
+                </div>
+              </div>
             <% end %>
           </div>
           
-          <!-- Navigation principale -->
+          <!-- Navigation principale modernisée -->
           <nav class="hidden md:block">
-            <div class="flex items-center space-x-1">
-              <%= link_to "Accueil", root_path, class: "inline-flex items-center px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+            <div class="flex items-center space-x-2">
+              <%= link_to root_path, class: "group inline-flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-indigo-700 hover:bg-indigo-50/80 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+                <svg class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Accueil
+              <% end %>
+              
+              <!-- Navigation supplémentaire pour les utilisateurs connectés -->
+              <% if user_signed_in? && current_user.admin? %>
+                <%= link_to events_path, class: "group inline-flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-emerald-700 hover:bg-emerald-50/80 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600" do %>
+                  <svg class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Événements
+                <% end %>
+              <% end %>
             </div>
           </nav>
 
-          <!-- Actions utilisateur -->
-          <div class="flex items-center space-x-3">
+          <!-- Actions utilisateur modernisées -->
+          <div class="flex items-center space-x-4">
             <% if user_signed_in? %>
               <!-- Utilisateur connecté -->
-              <div class="flex items-center space-x-3">
-                <!-- Salutation utilisateur -->
-                <div class="hidden sm:flex items-center space-x-2">
-                  <span class="text-sm text-slate-600">Bonjour,</span>
-                  <span class="text-sm font-semibold text-slate-900"><%= current_user.name %></span>
+              <div class="flex items-center space-x-4">
+                <!-- Profil utilisateur -->
+                <div class="hidden lg:flex items-center space-x-3 px-4 py-2 bg-slate-50/80 rounded-xl border border-slate-200/50">
+                  <!-- Avatar -->
+                  <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-sm">
+                    <span class="text-xs font-semibold text-white">
+                      <%= current_user.name&.first&.upcase || 'U' %>
+                    </span>
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-xs text-slate-500 font-medium">Bonjour,</span>
+                    <span class="text-sm font-semibold text-slate-900 -mt-0.5">
+                      <%= truncate(current_user.name, length: 15) %>
+                    </span>
+                  </div>
                 </div>
                 
-                <!-- Bouton admin si applicable -->
+                <!-- Actions rapides pour admin -->
                 <% if current_user.admin? %>
-                  <%= render(ButtonComponent.new(path: events_path, style: :primary)) do %>
-                    Gérer les événements
-                  <% end %>
+                  <div class="hidden md:block">
+                    <%= link_to events_path, class: "group inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-indigo-700 shadow-lg transition-all hover:from-indigo-700 hover:to-indigo-800 hover:shadow-xl hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+                      <svg class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      Gérer
+                    <% end %>
+                  </div>
                 <% end %>
                 
-                <!-- Bouton déconnexion -->
-                <%= render(ButtonComponent.new(
-                      path: destroy_user_session_path,
-                      style: :secondary,
-                      data: { turbo_method: :delete }
-                    )) do %>
-                  Se déconnecter
+                <!-- Menu mobile -->
+                <div class="md:hidden">
+                  <button class="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                  </button>
+                </div>
+                
+                <!-- Bouton déconnexion modernisé -->
+                <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "group inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 bg-white border border-slate-300 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-400 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600" do %>
+                  <svg class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  <span class="hidden sm:inline">Déconnexion</span>
                 <% end %>
               </div>
             <% else %>
               <!-- Utilisateur non connecté -->
-              <div class="flex items-center space-x-2">
-                <%= render(ButtonComponent.new(path: new_user_session_path, style: :secondary)) do %>
+              <div class="flex items-center space-x-3">
+                <%= link_to new_user_session_path, class: "group inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 bg-white border border-slate-300 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-400 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600" do %>
+                  <svg class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                  </svg>
                   Se connecter
                 <% end %>
-                <%= render(ButtonComponent.new(path: new_user_registration_path, style: :primary)) do %>
+                
+                <%= link_to new_user_registration_path, class: "group inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-indigo-700 shadow-lg transition-all hover:from-indigo-700 hover:to-indigo-800 hover:shadow-xl hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+                  <svg class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                  </svg>
                   S'inscrire
                 <% end %>
               </div>
@@ -73,9 +137,32 @@
       </div>
     </header>
 
-    <!-- Contenu principal -->
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <!-- Contenu principal optimisé -->
+    <main class="flex-1">
       <%= yield %>
     </main>
+    
+    <!-- Footer moderne (optionnel) -->
+    <footer class="mt-auto bg-slate-50/50 border-t border-slate-200/50">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+          <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center">
+              <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+            </div>
+            <div>
+              <div class="text-sm font-semibold text-slate-900">Ludistiq</div>
+              <div class="text-xs text-slate-500">Festival OS</div>
+            </div>
+          </div>
+          
+          <div class="text-sm text-slate-500">
+            © <%= Date.current.year %> Ludistiq. Système d'exploitation pour festivals de jeux.
+          </div>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

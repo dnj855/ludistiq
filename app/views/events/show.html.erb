@@ -1,141 +1,299 @@
-<div class="container mx-auto px-4">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
   <!-- En-tête de l'événement -->
-  <div class="bg-white shadow-sm rounded-xl ring-1 ring-inset ring-slate-200 mb-8">
-    <div class="px-6 py-8">
-      <div class="flex items-start space-x-4">
-        <div class="flex-shrink-0">
-          <div class="w-16 h-16 bg-indigo-100 rounded-lg flex items-center justify-center">
-            <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
+  <div class="mb-12">
+    <div class="flex items-start justify-between">
+      <div class="flex-1 min-w-0">
+        <!-- Breadcrumb -->
+        <nav class="flex mb-4" aria-label="Breadcrumb">
+          <ol role="list" class="flex items-center space-x-2 text-sm">
+            <li>
+              <%= link_to events_path, class: "text-slate-600 hover:text-slate-900 transition-colors" do %>
+                Événements
+              <% end %>
+            </li>
+            <li>
+              <svg class="flex-shrink-0 h-4 w-4 text-slate-400 mx-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+              </svg>
+            </li>
+            <li class="text-slate-900 font-medium" aria-current="page">
+              <%= truncate(@event.title, length: 30) %>
+            </li>
+          </ol>
+        </nav>
+
+        <!-- Titre principal -->
+        <div class="flex items-center space-x-4 mb-6">
+          <div class="flex-shrink-0">
+            <div class="w-20 h-20 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-sm">
+              <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900 mb-2"><%= @event.title %></h1>
+            <div class="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+              <div class="flex items-center">
+                <svg class="w-4 h-4 mr-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span><%= l @event.start_date, format: :long %> - <%= l @event.end_date, format: :long %></span>
+              </div>
+              <div class="flex items-center">
+                <svg class="w-4 h-4 mr-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span><%= @event.participations.count %> participants</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="flex-1 min-w-0">
-          <h1 class="text-3xl font-bold text-slate-900 mb-3"><%= @event.title %></h1>
-          <div class="flex items-center text-sm text-slate-600 mb-4">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>Du <%= l @event.start_date, format: :long %> au <%= l @event.end_date, format: :long %></span>
-          </div>
-          
-          <% if @event.description.present? %>
-            <div class="prose max-w-none text-slate-700">
+
+        <!-- Description -->
+        <% if @event.description.present? %>
+          <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+            <div class="prose max-w-none text-slate-700 leading-relaxed">
               <%= simple_format(@event.description) %>
             </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
 
-  <!-- Tableau de bord de l'événement -->
-  <div class="mb-8">
-    <div class="flex items-center mb-6">
-      <h2 class="text-2xl font-bold text-slate-900">Tableau de bord</h2>
-      <div class="ml-3 h-6 w-px bg-slate-300"></div>
-      <p class="ml-3 text-sm text-slate-600">Gérez tous les aspects de votre événement</p>
+  <!-- Dashboard principal -->
+  <div class="mb-12">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h2 class="text-2xl md:text-3xl font-semibold text-slate-900">Tableau de bord</h2>
+        <p class="mt-2 text-slate-600">Gérez tous les aspects de votre événement depuis cette interface centralisée</p>
+      </div>
     </div>
     
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Cartes principales du dashboard -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-8">
       <!-- Ludothèque -->
-      <%= link_to event_games_path(@event), class: "group relative bg-white p-6 rounded-xl shadow-sm ring-1 ring-inset ring-slate-200 hover:shadow-md transition-all hover:ring-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
-        <div>
-          <span class="rounded-lg inline-flex p-3 bg-emerald-100 text-emerald-600 group-hover:bg-emerald-200 transition-colors">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-            </svg>
-          </span>
+      <%= link_to event_games_path(@event), class: "group relative overflow-hidden bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 transition-all duration-200 hover:shadow-lg hover:ring-slate-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+        <div class="p-8">
+          <div class="flex items-start justify-between mb-6">
+            <div class="flex-shrink-0">
+              <div class="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center group-hover:bg-emerald-200 transition-colors">
+                <svg class="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+              </div>
+            </div>
+            <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+              <svg class="w-5 h-5 text-slate-400 group-hover:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
+          </div>
+          
+          <div class="space-y-3">
+            <h3 class="text-xl font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">
+              Ludothèque
+            </h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Gérez votre collection de jeux. Recherchez dans BoardGameGeek, ajoutez manuellement ou importez vos favoris.
+            </p>
+            <div class="flex items-center space-x-2 pt-2">
+              <span class="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800">
+                <%= @event.games.count %> jeux
+              </span>
+            </div>
+          </div>
         </div>
-        <div class="mt-4">
-          <h3 class="text-lg font-semibold text-slate-900">
-            <span class="absolute inset-0" aria-hidden="true"></span>
-            Gérer la Ludothèque
-          </h3>
-          <p class="mt-2 text-sm text-slate-600">
-            Ajoutez et gérez les jeux disponibles pour cet événement. Recherchez dans BoardGameGeek ou ajoutez manuellement.
-          </p>
-        </div>
-        <span class="pointer-events-none absolute top-6 right-6 text-slate-300 group-hover:text-slate-400 transition-colors" aria-hidden="true">
-          <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
-          </svg>
-        </span>
       <% end %>
 
       <!-- Compétences -->
-      <%= link_to my_skills_event_path(@event), class: "group relative bg-white p-6 rounded-xl shadow-sm ring-1 ring-inset ring-slate-200 hover:shadow-md transition-all hover:ring-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
-        <div>
-          <span class="rounded-lg inline-flex p-3 bg-sky-100 text-sky-600 group-hover:bg-sky-200 transition-colors">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-            </svg>
-          </span>
+      <%= link_to my_skills_event_path(@event), class: "group relative overflow-hidden bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 transition-all duration-200 hover:shadow-lg hover:ring-slate-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+        <div class="p-8">
+          <div class="flex items-start justify-between mb-6">
+            <div class="flex-shrink-0">
+              <div class="w-14 h-14 bg-sky-100 rounded-xl flex items-center justify-center group-hover:bg-sky-200 transition-colors">
+                <svg class="w-7 h-7 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+            </div>
+            <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+              <svg class="w-5 h-5 text-slate-400 group-hover:text-sky-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
+          </div>
+          
+          <div class="space-y-3">
+            <h3 class="text-xl font-semibold text-slate-900 group-hover:text-sky-700 transition-colors">
+              Mes Compétences
+            </h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Évaluez vos compétences ludiques pour optimiser l'organisation et faciliter la répartition des équipes.
+            </p>
+            <div class="flex items-center space-x-2 pt-2">
+              <span class="inline-flex items-center rounded-full bg-sky-100 px-2.5 py-0.5 text-xs font-medium text-sky-800">
+                Auto-évaluation
+              </span>
+            </div>
+          </div>
         </div>
-        <div class="mt-4">
-          <h3 class="text-lg font-semibold text-slate-900">
-            <span class="absolute inset-0" aria-hidden="true"></span>
-            Évaluer mes Compétences
-          </h3>
-          <p class="mt-2 text-sm text-slate-600">
-            Auto-évaluez vos compétences ludiques pour optimiser l'organisation et la répartition des équipes.
-          </p>
-        </div>
-        <span class="pointer-events-none absolute top-6 right-6 text-slate-300 group-hover:text-slate-400 transition-colors" aria-hidden="true">
-          <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
-          </svg>
-        </span>
       <% end %>
 
       <!-- Participants (admin seulement) -->
       <% if current_user.participations.find_by(event: @event)&.admin? %>
-        <%= link_to participants_event_path(@event), class: "group relative bg-white p-6 rounded-xl shadow-sm ring-1 ring-inset ring-slate-200 hover:shadow-md transition-all hover:ring-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
-          <div>
-            <span class="rounded-lg inline-flex p-3 bg-indigo-100 text-indigo-600 group-hover:bg-indigo-200 transition-colors">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </span>
+        <%= link_to participants_event_path(@event), class: "group relative overflow-hidden bg-white rounded-2xl shadow-sm ring-1 ring-slate-200 transition-all duration-200 hover:shadow-lg hover:ring-slate-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+          <div class="p-8">
+            <div class="flex items-start justify-between mb-6">
+              <div class="flex-shrink-0">
+                <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center group-hover:bg-indigo-200 transition-colors">
+                  <svg class="w-7 h-7 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                <svg class="w-5 h-5 text-slate-400 group-hover:text-indigo-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
+            </div>
+            
+            <div class="space-y-3">
+              <h3 class="text-xl font-semibold text-slate-900 group-hover:text-indigo-700 transition-colors">
+                Participants
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Gérez les rôles et permissions des participants. Supervisez l'équipe organisatrice de l'événement.
+              </p>
+              <div class="flex items-center space-x-2 pt-2">
+                <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
+                  Admin uniquement
+                </span>
+              </div>
+            </div>
           </div>
-          <div class="mt-4">
-            <h3 class="text-lg font-semibold text-slate-900">
-              <span class="absolute inset-0" aria-hidden="true"></span>
-              Gérer les Participants
-            </h3>
-            <p class="mt-2 text-sm text-slate-600">
-              Gérez les rôles et permissions des participants à cet événement. Réservé aux administrateurs.
+        <% end %>
+      <% else %>
+        <!-- Placeholder pour les non-admins -->
+        <div class="bg-slate-50 rounded-2xl p-8 border-2 border-dashed border-slate-200">
+          <div class="text-center">
+            <div class="w-14 h-14 bg-slate-200 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <svg class="w-7 h-7 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-900 mb-2">Gestion des Participants</h3>
+            <p class="text-sm text-slate-600">
+              Cette section est réservée aux administrateurs de l'événement.
             </p>
           </div>
-          <span class="pointer-events-none absolute top-6 right-6 text-slate-300 group-hover:text-slate-400 transition-colors" aria-hidden="true">
-            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
-            </svg>
-          </span>
-        <% end %>
+        </div>
       <% end %>
     </div>
   </div>
 
-  <!-- Actions de gestion -->
-  <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-    <%= link_to edit_event_path(@event), class: "inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
-      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-      </svg>
-      Modifier l'événement
-    <% end %>
-    <%= link_to event_zones_path(@event), class: "inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
-      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-      </svg>
-      Gérer les Zones
-    <% end %>
-    <%= link_to events_path, class: "inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
-      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-      </svg>
-      Retour à la liste
-    <% end %>
+  <!-- Section outils avancés -->
+  <div class="mb-12">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h3 class="text-xl md:text-2xl font-semibold text-slate-900">Outils d'organisation</h3>
+        <p class="mt-1 text-slate-600">Fonctionnalités avancées pour optimiser votre événement</p>
+      </div>
+    </div>
+    
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <!-- Zones -->
+      <%= link_to event_zones_path(@event), class: "group flex items-center p-4 bg-white rounded-xl shadow-sm ring-1 ring-slate-200 transition-all hover:shadow-md hover:ring-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+        <div class="flex-shrink-0">
+          <div class="w-10 h-10 bg-violet-100 rounded-lg flex items-center justify-center group-hover:bg-violet-200 transition-colors">
+            <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+            </svg>
+          </div>
+        </div>
+        <div class="ml-4 flex-1">
+          <p class="text-sm font-medium text-slate-900 group-hover:text-violet-700 transition-colors">Gérer les Zones</p>
+          <p class="text-xs text-slate-600">Espaces thématiques</p>
+        </div>
+        <svg class="w-4 h-4 text-slate-400 group-hover:text-violet-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      <% end %>
+
+             <!-- Missions -->
+       <%= link_to event_zones_path(@event), class: "group flex items-center p-4 bg-white rounded-xl shadow-sm ring-1 ring-slate-200 transition-all hover:shadow-md hover:ring-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+         <div class="flex-shrink-0">
+           <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center group-hover:bg-orange-200 transition-colors">
+             <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m5 0h2a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+             </svg>
+           </div>
+         </div>
+         <div class="ml-4 flex-1">
+           <p class="text-sm font-medium text-slate-900 group-hover:text-orange-700 transition-colors">Missions</p>
+           <p class="text-xs text-slate-600">Via zones et assignations</p>
+         </div>
+         <svg class="w-4 h-4 text-slate-400 group-hover:text-orange-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+         </svg>
+       <% end %>
+
+             <!-- Planning -->
+       <%= link_to planning_path, class: "group flex items-center p-4 bg-white rounded-xl shadow-sm ring-1 ring-slate-200 transition-all hover:shadow-md hover:ring-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+        <div class="flex-shrink-0">
+          <div class="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center group-hover:bg-teal-200 transition-colors">
+            <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+        </div>
+        <div class="ml-4 flex-1">
+          <p class="text-sm font-medium text-slate-900 group-hover:text-teal-700 transition-colors">Planning</p>
+          <p class="text-xs text-slate-600">Horaires et créneaux</p>
+        </div>
+        <svg class="w-4 h-4 text-slate-400 group-hover:text-teal-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      <% end %>
+
+      <!-- Messages -->
+      <%= link_to event_messages_path(@event), class: "group flex items-center p-4 bg-white rounded-xl shadow-sm ring-1 ring-slate-200 transition-all hover:shadow-md hover:ring-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+        <div class="flex-shrink-0">
+          <div class="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center group-hover:bg-pink-200 transition-colors">
+            <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </div>
+        </div>
+        <div class="ml-4 flex-1">
+          <p class="text-sm font-medium text-slate-900 group-hover:text-pink-700 transition-colors">Messages</p>
+          <p class="text-xs text-slate-600">Communication équipe</p>
+        </div>
+        <svg class="w-4 h-4 text-slate-400 group-hover:text-pink-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Actions principales -->
+  <div class="border-t border-slate-200 pt-8">
+    <div class="flex flex-col sm:flex-row gap-3">
+      <%= link_to edit_event_path(@event), class: "inline-flex items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+        Modifier l'événement
+      <% end %>
+      
+      <%= link_to events_path, class: "inline-flex items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Retour à la liste
+      <% end %>
+    </div>
   </div>
 </div>
