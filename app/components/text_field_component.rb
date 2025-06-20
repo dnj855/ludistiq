@@ -24,7 +24,7 @@ class TextFieldComponent < ViewComponent::Base
 
   # MODIFIÉ : La méthode des classes est maintenant plus intelligente.
   def field_classes
-    default_classes = 'block w-full rounded-md border-0 py-1.5 shadow-sm sm:text-sm sm:leading-6'
+    default_classes = 'block w-full rounded-md border-0 py-1.5 px-2 shadow-sm sm:text-sm sm:leading-6'
 
     if has_errors?
       # Classes en cas d'erreur, basées sur ton DESIGN_SYSTEM.md

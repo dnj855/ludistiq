@@ -8,7 +8,7 @@
     <div class="participant-row" id="<%= dom_id(user, 'assignment') %>">
       <span><%= user.name %></span>
       <span>
-        Score compétence : <%= user.competence_score_for(@zone) %>%
+        Score compétence : <%= ZoneCompetenceScoreCalculator.call(user: user, zone: @zone) %>%
       </span>
       <span>
         <%= render 'assignments/assignment_button', user: user, mission: @mission %>
