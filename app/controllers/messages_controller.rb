@@ -10,7 +10,6 @@ class MessagesController < ApplicationController
   end
 
   def show
-    # TODO: Ajouter la logique d'autorisation pour la conversation privée.
     @message = @event.messages.find(params[:id])
     # On récupère tous les utilisateurs qui ont participé au thread
     participant_ids = [@message.sender_id] + @message.replies.pluck(:sender_id)
