@@ -2,13 +2,21 @@
 <% assignment = user.assignments.find_by(mission: mission) %>
 
 <% if assignment %>
-  <%= button_to "Désaffecter",
-                event_zone_mission_assignment_path(@event, @zone, mission, assignment),
-                method: :delete,
-                class: "btn-destructive" %>
+  <%= render(ButtonComponent.new(
+        path: event_zone_mission_assignment_path(@event, @zone, mission, assignment),
+        style: :destructive,
+        method: :delete,
+        data: { turbo_method: :delete }
+      )) do %>
+    Désaffecter
+  <% end %>
 <% else %>
-  <%= button_to "Affecter",
-                event_zone_mission_assignments_path(@event, @zone, mission, user_id: user.id),
-                method: :post,
-                class: "btn-primary" %>
+  <%= render(ButtonComponent.new(
+        path: event_zone_mission_assignments_path(@event, @zone, mission, user_id: user.id),
+        style: :primary,
+        method: :post,
+        data: { turbo_method: :post }
+      )) do %>
+    Affecter
+  <% end %>
 <% end %>

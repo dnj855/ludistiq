@@ -18,7 +18,7 @@
       <h1 class="text-3xl font-bold text-gray-900">Zones</h1>
       <p class="mt-2 text-sm text-gray-600">Gérez les zones de votre événement</p>
     </div>
-    <%= link_to new_event_zone_path(@event), class: "mt-4 sm:mt-0 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" do %>
+    <%= render(ButtonComponent.new(path: new_event_zone_path(@event), style: :primary)) do %>
       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
       </svg>
@@ -63,14 +63,19 @@
                   </div>
                 </div>
                 <div class="flex items-center space-x-2">
-                  <%= link_to "Missions", event_zone_missions_path(@event, zone), 
-                        class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
-                  <%= link_to "Modifier", edit_event_zone_path(@event, zone), 
-                        class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
-                  <%= button_to "Supprimer", event_zone_path(@event, zone), 
-                        method: :delete,
-                        class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors", 
-                        data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer cette zone ?" } %>
+                  <%= render(ButtonComponent.new(path: event_zone_missions_path(@event, zone), style: :secondary)) do %>
+                    Missions
+                  <% end %>
+                  <%= render(ButtonComponent.new(path: edit_event_zone_path(@event, zone), style: :secondary)) do %>
+                    Modifier
+                  <% end %>
+                  <%= render(ButtonComponent.new(
+                        path: event_zone_path(@event, zone),
+                        style: :destructive,
+                        data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer cette zone ?" }
+                      )) do %>
+                    Supprimer
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -89,7 +94,7 @@
         <h3 class="mt-6 text-lg font-medium text-gray-900">Aucune zone</h3>
         <p class="mt-2 text-sm text-gray-500">Commencez par créer votre première zone pour organiser vos jeux.</p>
         <div class="mt-6">
-          <%= link_to new_event_zone_path(@event), class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" do %>
+          <%= render(ButtonComponent.new(path: new_event_zone_path(@event), style: :primary)) do %>
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
@@ -103,7 +108,7 @@
   <!-- Actions supplémentaires -->
   <div class="mt-8 pt-6 border-t border-gray-200">
     <div class="flex space-x-3">
-      <%= link_to @event, class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" do %>
+      <%= render(ButtonComponent.new(path: event_path(@event), style: :secondary)) do %>
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>

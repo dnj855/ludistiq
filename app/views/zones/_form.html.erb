@@ -12,17 +12,13 @@
 
   <!-- Nom de la zone -->
   <div>
-    <%= form.label :name, class: "block text-sm font-medium text-gray-700 mb-2" do %>
-      Nom de la zone
-      <span class="text-red-500">*</span>
-    <% end %>
-    <%= form.text_field :name, 
-          class: [
-            "appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 sm:text-sm transition-colors",
-            zone.errors.has_key?(:name) ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-          ],
+    <%= render(TextFieldComponent.new(
+          form: form,
+          method: :name,
+          label: "Nom de la zone *",
           placeholder: "Ex: Zone Stratégie, Zone Familiale, Zone Ambiance...",
-          required: true %>
+          required: true
+        )) %>
     <% if zone.errors.has_key?(:name) %>
       <p class="mt-2 text-sm text-red-600">
         <%= zone.errors.full_messages_for(:name).to_sentence %>
@@ -56,7 +52,8 @@
   <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-6">
     <%= form.submit zone.persisted? ? "Mettre à jour la zone" : "Créer la zone",
           class: "w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" %>
-    <%= link_to "Annuler", event_zones_path(@event),
-          class: "w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+    <%= render(ButtonComponent.new(path: event_zones_path(@event), style: :secondary)) do %>
+      Annuler
+    <% end %>
   </div>
 <% end %> 

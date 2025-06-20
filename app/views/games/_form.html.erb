@@ -59,13 +59,13 @@
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <!-- Titre -->
         <div class="sm:col-span-2">
-          <%= f.label :title, "Titre du jeu", class: "block text-sm font-medium text-gray-700 mb-2" do %>
-            Titre du jeu <span class="text-red-500">*</span>
-          <% end %>
-          <%= f.text_field :title, 
-                class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
+          <%= render(TextFieldComponent.new(
+                form: f, 
+                method: :title, 
+                label: "Titre du jeu *",
                 placeholder: "Ex: Catan, Azul, Wingspan...",
-                required: true %>
+                required: true
+              )) %>
           <% if f.object.errors.has_key?(:title) %>
             <p class="mt-2 text-sm text-red-600">
               <%= f.object.errors.full_messages_for(:title).to_sentence %>
@@ -145,10 +145,12 @@
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <!-- Propriétaire -->
         <div>
-          <%= f.label :owner, "Propriétaire", class: "block text-sm font-medium text-gray-700 mb-2" %>
-          <%= f.text_field :owner, 
-                class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors",
-                placeholder: "Nom du propriétaire" %>
+          <%= render(TextFieldComponent.new(
+                form: f, 
+                method: :owner, 
+                label: "Propriétaire",
+                placeholder: "Nom du propriétaire"
+              )) %>
           <p class="mt-1 text-sm text-gray-500">Qui possède ce jeu ?</p>
           <% if f.object.errors.has_key?(:owner) %>
             <p class="mt-2 text-sm text-red-600">

@@ -4,7 +4,9 @@
     <h1 class="text-3xl font-bold text-slate-900">Mur de communication</h1>
     <%# Ce bouton n'apparaît que pour les admins de l'événement %>
     <% if current_user_is_event_admin? %>
-      <%= link_to 'Nouveau Message', new_event_message_path(@event), class: "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold text-white bg-indigo-600 shadow-sm transition-colors hover:bg-indigo-700" %>
+      <%= render(ButtonComponent.new(path: new_event_message_path(@event), style: :primary)) do %>
+        Nouveau Message
+      <% end %>
     <% end %>
   </div>
 

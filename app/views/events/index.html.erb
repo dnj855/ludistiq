@@ -7,7 +7,7 @@
       <h1 class="text-3xl font-bold text-slate-900">Événements</h1>
       <p class="mt-2 text-sm text-slate-600">Gérez et organisez vos événements ludiques</p>
     </div>
-    <%= link_to new_event_path, class: "mt-4 sm:mt-0 inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold text-white bg-indigo-600 shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+    <%= render(ButtonComponent.new(path: new_event_path, style: :primary)) do %>
       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
       </svg>
@@ -52,11 +52,19 @@
 
               <!-- Actions -->
               <div class="mt-6 flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
-                <%= link_to "Voir", event, class: "inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
-                <%= link_to "Modifier", edit_event_path(event), class: "inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
-                <%= button_to "Supprimer", event, method: :delete, 
-                      class: "inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-white bg-rose-600 shadow-sm transition-colors hover:bg-rose-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600", 
-                      data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer cet événement ?" } %>
+                <%= render(ButtonComponent.new(path: event_path(event), style: :secondary)) do %>
+                  Voir
+                <% end %>
+                <%= render(ButtonComponent.new(path: edit_event_path(event), style: :secondary)) do %>
+                  Modifier
+                <% end %>
+                <%= render(ButtonComponent.new(
+                      path: event, 
+                      style: :destructive,
+                      data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer cet événement ?" }
+                    )) do %>
+                  Supprimer
+                <% end %>
               </div>
             </div>
           </div>
@@ -73,7 +81,7 @@
         <h3 class="mt-6 text-lg font-semibold text-slate-900">Aucun événement</h3>
         <p class="mt-2 text-sm text-slate-600">Commencez par créer votre premier événement ludique.</p>
         <div class="mt-6">
-          <%= link_to new_event_path, class: "inline-flex items-center rounded-md px-4 py-2 text-sm font-semibold text-white bg-indigo-600 shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+          <%= render(ButtonComponent.new(path: new_event_path, style: :primary)) do %>
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>

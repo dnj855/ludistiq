@@ -43,20 +43,29 @@
                 
                 <!-- Bouton admin si applicable -->
                 <% if current_user.admin? %>
-                  <%= link_to "Gérer les événements", events_path, class: "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold text-white bg-indigo-600 shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+                  <%= render(ButtonComponent.new(path: events_path, style: :primary)) do %>
+                    Gérer les événements
+                  <% end %>
                 <% end %>
                 
                 <!-- Bouton déconnexion -->
-                <%= button_to "Se déconnecter", destroy_user_session_path, method: :delete, 
-                      class: "inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 border-0 cursor-pointer" %>
+                <%= render(ButtonComponent.new(
+                      path: destroy_user_session_path,
+                      style: :secondary,
+                      data: { turbo_method: :delete }
+                    )) do %>
+                  Se déconnecter
+                <% end %>
               </div>
             <% else %>
               <!-- Utilisateur non connecté -->
               <div class="flex items-center space-x-2">
-                <%= link_to "Se connecter", new_user_session_path, 
-                      class: "inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm ring-1 ring-inset ring-slate-300 transition-colors hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
-                <%= link_to "S'inscrire", new_user_registration_path, 
-                      class: "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold text-white bg-indigo-600 shadow-sm transition-colors hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+                <%= render(ButtonComponent.new(path: new_user_session_path, style: :secondary)) do %>
+                  Se connecter
+                <% end %>
+                <%= render(ButtonComponent.new(path: new_user_registration_path, style: :primary)) do %>
+                  S'inscrire
+                <% end %>
               </div>
             <% end %>
           </div>

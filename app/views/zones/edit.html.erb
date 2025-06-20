@@ -44,9 +44,12 @@
 
   <!-- Actions supplémentaires -->
   <div class="mt-6 flex justify-center">
-    <%= button_to "Supprimer cette zone", event_zone_path(@event, @zone), 
-          method: :delete,
-          class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors", 
-          data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer cette zone ? Cette action est irréversible." } %>
+    <%= render(ButtonComponent.new(
+          path: event_zone_path(@event, @zone),
+          style: :destructive,
+          data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer cette zone ? Cette action est irréversible." }
+        )) do %>
+      Supprimer cette zone
+    <% end %>
   </div>
 </div> 
